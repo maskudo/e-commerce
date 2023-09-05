@@ -6,16 +6,18 @@ import {
   Image,
   FlatList,
   ScrollView,
-  Button,
   Pressable,
+  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import Categories from '../components/common/Categories';
+import DiscountSwiper from '../components/home/DiscountSwiper';
 import Item from '../components/common/Item';
 import COLORS from '../constants/colors';
 import {ITEMS} from '../constants/data';
 import {logoImage, newArrivalImage, sponsoredImage} from '../constants/images';
 import TYPOGRAPHY from '../constants/typography';
+import Deals from '../components/home/Deals';
 
 export default function Homepage() {
   return (
@@ -67,15 +69,8 @@ export default function Homepage() {
           </View>
         </View>
         <Categories />
-        <View style={styles.discounts} />
-        <FlatList
-          contentContainerStyle={styles.items}
-          data={ITEMS}
-          horizontal={true}
-          keyExtractor={item => item.id}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <Item item={item} />}
-        />
+        <DiscountSwiper />
+        <Deals />
         <View style={styles.newArrival}>
           <Image source={newArrivalImage} style={styles.newArrivalImage} />
           <View style={styles.newArrivalTextContainer}>
@@ -149,12 +144,9 @@ const styles = StyleSheet.create({
     ...TYPOGRAPHY.h3,
     fontWeight: 'bold',
   },
-  discounts: {
+  discountSwiper: {
     height: 220,
-    backgroundColor: 'pink',
-  },
-  items: {
-    gap: 10,
+    position: 'relative',
   },
   newArrival: {
     backgroundColor: COLORS.white,
@@ -211,5 +203,12 @@ const styles = StyleSheet.create({
   },
   sponsoredPressable: {
     gap: 10,
+  },
+  dot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    margin: 3,
+    backgroundColor: COLORS.lightgray,
   },
 });
