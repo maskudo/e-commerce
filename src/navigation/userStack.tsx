@@ -8,6 +8,7 @@ import {StyleSheet} from 'react-native';
 import Profile from '../screens/Profile';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
+import Homepage from '../screens/Homepage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -15,7 +16,7 @@ const Tab = createBottomTabNavigator();
 export default function UserStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Swipe"
           component={Swipe}
@@ -55,9 +56,26 @@ function TabScreen() {
         name="Homepage"
         component={Homepage}
         options={{
-          tabBarLabel: '',
           tabBarIcon: ({size, color}) => (
             <Icon name={'home'} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Wishlist"
+        component={Profile}
+        options={{
+          tabBarIcon: ({size, color}) => (
+            <Icon name={'heart'} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Profile}
+        options={{
+          tabBarIcon: ({size, color}) => (
+            <Icon name={'shopping-cart'} color={color} size={size} />
           ),
         }}
       />
@@ -71,9 +89,17 @@ function TabScreen() {
           },
         })}
         options={{
-          tabBarLabel: '',
           tabBarIcon: ({size, color}) => (
             <Icon name={'user'} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Profile}
+        options={{
+          tabBarIcon: ({size, color}) => (
+            <Icon name={'settings'} color={color} size={size} />
           ),
         }}
       />
@@ -88,10 +114,5 @@ const styles = StyleSheet.create({
   addPostIcon: {
     transform: [{rotate: '-45deg'}],
   },
-  tabBarStyle: {
-    borderTopWidth: 1,
-    borderTopColor: COLORS.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
+  tabBarStyle: {},
 });
