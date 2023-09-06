@@ -2,72 +2,26 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Image,
-  FlatList,
   ScrollView,
   Pressable,
-  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import Categories from '../components/common/Categories';
 import DiscountSwiper from '../components/home/DiscountSwiper';
-import Item from '../components/common/Item';
 import COLORS from '../constants/colors';
-import {ITEMS} from '../constants/data';
-import {logoImage, newArrivalImage, sponsoredImage} from '../constants/images';
+import {newArrivalImage, sponsoredImage} from '../constants/images';
 import TYPOGRAPHY from '../constants/typography';
 import Deals from '../components/home/Deals';
+import Header from '../components/common/Header';
+import FilterHeader from '../components/common/FilterHeader';
 
 export default function Homepage() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollview}>
-        <View style={styles.header}>
-          <Text>
-            <Icon name="menu" size={32} color={COLORS.black} />
-          </Text>
-          <View style={styles.headerMiddle}>
-            <Image
-              source={logoImage}
-              style={styles.logoImage}
-              resizeMode="cover"
-            />
-            <Text>Stylish</Text>
-          </View>
-          <Text>
-            <Icon name="user" size={32} color={COLORS.black} />
-          </Text>
-        </View>
-        <View style={styles.searchBarContainer}>
-          <Text>
-            <Icon name="search" size={14} color={COLORS.black} />
-          </Text>
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search any Product"
-          />
-          <Text>
-            <Icon name="mic" size={14} color={COLORS.black} />
-          </Text>
-        </View>
-        <View style={styles.filter}>
-          <Text style={styles.featureText}>All Featured</Text>
-          <View style={styles.filterCategory}>
-            <View>
-              <Text>
-                Sort
-                <Icon name="filter" size={14} color={COLORS.black} />
-              </Text>
-            </View>
-            <View>
-              <Text>
-                Filter
-                <Icon name="filter" size={14} color={COLORS.black} />
-              </Text>
-            </View>
-          </View>
-        </View>
+        <Header />
+        <FilterHeader title="All Featured" />
         <Categories />
         <DiscountSwiper />
         <Deals />
@@ -110,27 +64,6 @@ const styles = StyleSheet.create({
   scrollview: {
     gap: 20,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  headerMiddle: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  logoImage: {
-    height: 34,
-  },
-  searchBarContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 40,
-    borderWidth: 1,
-    paddingHorizontal: 20,
-    borderColor: COLORS.black,
-  },
-  searchBar: {},
   filter: {
     flexDirection: 'row',
     justifyContent: 'space-between',

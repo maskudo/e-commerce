@@ -26,6 +26,17 @@ export const ITEMS: ItemProps[] = [
       'https://1.bp.blogspot.com/-hUBV8UZpv4c/TbCGbVf9Z4I/AAAAAAAADuw/FHhvwlXXiH4/s1600/Hot-Pink-Formal-Dresses-Picture-12.jpg',
   },
   {
+    id: '523',
+    name: 'Sony Smartphone',
+    description:
+      'Flagship Sony smartphone with earphone jack and waterproofing',
+    price: 25000,
+    discount: 20,
+    stars: 4,
+    reviews: 5000,
+    image: 'https://pngimg.com/uploads/smartphone/smartphone_PNG8533.png',
+  },
+  {
     id: '12',
     name: 'Brown shoes',
     description: 'cool looking brown shoes very good',

@@ -9,6 +9,8 @@ import Profile from '../screens/Profile';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 import Homepage from '../screens/Homepage';
+import Wishlist from '../screens/Wishlist';
+import ItemScreen from '../screens/ItemScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,6 +48,7 @@ function TabScreen() {
   const navigation = useNavigation();
   return (
     <Tab.Navigator
+      initialRouteName={'Wishlist'}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: COLORS.blue,
@@ -63,7 +66,7 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Wishlist"
-        component={Profile}
+        component={Wishlist}
         options={{
           tabBarIcon: ({size, color}) => (
             <Icon name={'heart'} color={color} size={size} />
@@ -92,6 +95,13 @@ function TabScreen() {
           tabBarIcon: ({size, color}) => (
             <Icon name={'user'} color={color} size={size} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="ItemScreen"
+        component={ItemScreen}
+        options={{
+          tabBarButton: () => null,
         }}
       />
       <Tab.Screen

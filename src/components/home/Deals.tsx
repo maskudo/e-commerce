@@ -35,7 +35,7 @@ export default function Deals() {
 
 const styles = StyleSheet.create({
   items: {
-    gap: 15,
+    gap: 5,
   },
   deal: {
     backgroundColor: COLORS.blue,
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 4,
+    overflow: 'hidden',
     padding: 5,
     marginBottom: 20,
   },

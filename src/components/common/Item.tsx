@@ -1,4 +1,5 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
 
@@ -12,12 +13,20 @@ export type ItemProps = {
   reviews: number;
   image: string;
 };
-export default function Item({item}: {item: ItemProps}) {
+export default function Item({
+  item,
+  height,
+}: {
+  item: ItemProps;
+  height: number;
+}) {
   const discountedPrice = item.discount
     ? item.discount * item.price
     : item.price;
+  const navigation = useNavigation();
+  const handlePress = () => navigation.navigate('ItemScreen', {item});
   return (
-    <View style={styles.item}>
+    <Pressable style={[styles.item, {height: height}]} onPress={handlePress}>
       <Image source={{uri: item.image}} style={styles.image} />
       <View style={styles.itemInfo}>
         <Text style={styles.name}>{item.name}</Text>
@@ -40,7 +49,7 @@ export default function Item({item}: {item: ItemProps}) {
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -49,13 +58,19 @@ const styles = StyleSheet.create({
     width: 170,
     paddingBottom: 2,
     backgroundColor: COLORS.white,
+    marginBottom: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+    marginHorizontal: 5,
   },
   itemInfo: {
     padding: 4,
+    height: 125,
   },
   image: {
     width: '100%',
     height: 125,
+    flex: 1,
   },
   name: {
     ...TYPOGRAPHY.bodySmall,
