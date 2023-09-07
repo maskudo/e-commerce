@@ -1,0 +1,137 @@
+import {Pressable, StyleSheet, Text, View, ScrollView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
+import COLORS from '../constants/colors';
+import TYPOGRAPHY from '../constants/typography';
+import Item from '../components/checkout/Item';
+import {ITEMS} from '../constants/data';
+
+export default function Checkout() {
+  const navigation = useNavigation();
+  const goBack = () => navigation.goBack();
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Pressable onPress={goBack}>
+            <Icon name="chevron-left" size={30} color={COLORS.black} />
+          </Pressable>
+          <View>
+            <Text style={styles.headerText}>Checkout</Text>
+          </View>
+        </View>
+        <View style={styles.deliveryAddressContainer}>
+          <View style={styles.deliveryAddressHeader}>
+            <Icon name="map-pin" size={18} color={COLORS.gray} />
+            <Text style={styles.deliveryAddressHeaderText}>
+              Delivery Address
+            </Text>
+          </View>
+          <View style={styles.deliveryAddressBody}>
+            <View style={[styles.deliveryAddress, styles.boxShadow]}>
+              <Text style={styles.deliveryAddressTitle}>Address</Text>
+              <Text style={styles.deliveryAddressLocation}>
+                216 St Paul's Rd, London N1 2LL, UK {'\n'}Contact : +44-784232
+              </Text>
+            </View>
+            <View style={[styles.editDeliveryAddress, styles.boxShadow]}>
+              <Icon name="plus-circle" size={30} color={COLORS.black} />
+            </View>
+          </View>
+        </View>
+        <View style={styles.shoppingList}>
+          <Text style={styles.shoppingListTitle}>Shopping List</Text>
+          <View>
+            <Item item={ITEMS[0]} />
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 13,
+    flex: 1,
+  },
+  scrollView: {
+    gap: 20,
+    overflow: 'visible',
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 130,
+    flex: 1,
+  },
+  headerText: {
+    ...TYPOGRAPHY.caption,
+    fontSize: 18,
+    color: COLORS.black,
+  },
+  deliveryAddressContainer: {
+    gap: 20,
+  },
+  deliveryAddressHeader: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+  },
+  boxShadow: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  editDeliveryAddress: {
+    width: 80,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deliveryAddress: {
+    height: '100%',
+    width: 241,
+  },
+  deliveryAddressHeaderText: {
+    ...TYPOGRAPHY.h2Bold,
+    fontSize: 14,
+  },
+  deliveryAddressBody: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 80,
+  },
+  deliveryAddressTitle: {
+    ...TYPOGRAPHY.h2Bold,
+    fontSize: 12,
+  },
+  deliveryAddressLocation: {
+    ...TYPOGRAPHY.h2Regular,
+    fontSize: 12,
+  },
+  hr: {
+    height: 1,
+    borderWidth: 0.5,
+    borderColor: COLORS.lightgray,
+  },
+  shoppingList: {
+    gap: 10,
+  },
+  shoppingListTitle: {
+    ...TYPOGRAPHY.h2Bold,
+    fontSize: 14,
+  },
+});
