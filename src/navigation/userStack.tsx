@@ -35,6 +35,11 @@ export default function UserStack() {
           options={() => ({headerShown: false})}
         />
         <Stack.Screen
+          name="StackProfile"
+          component={Profile}
+          options={() => ({headerShown: false})}
+        />
+        <Stack.Screen
           name="Home"
           component={TabScreen}
           options={() => ({headerShown: false})}
@@ -51,7 +56,7 @@ function TabScreen() {
       initialRouteName={'Wishlist'}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.blue,
+        tabBarActiveTintColor: COLORS.red,
         tabBarInactiveTintColor: COLORS.black,
         tabBarStyle: styles.tabBarStyle,
       }}>
@@ -88,7 +93,7 @@ function TabScreen() {
         listeners={() => ({
           tabPress: e => {
             e.preventDefault();
-            navigation.navigate('Profile', {});
+            navigation.navigate('StackProfile', {});
           },
         })}
         options={{
