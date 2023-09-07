@@ -11,6 +11,8 @@ import SignUp from '../screens/SignUp';
 import Homepage from '../screens/Homepage';
 import Wishlist from '../screens/Wishlist';
 import ItemScreen from '../screens/ItemScreen';
+import PlaceOrder from '../screens/PlaceOrder';
+import Checkout from '../screens/Checkout';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,6 +39,16 @@ export default function UserStack() {
         <Stack.Screen
           name="StackProfile"
           component={Profile}
+          options={() => ({headerShown: false})}
+        />
+        <Stack.Screen
+          name="Checkout"
+          component={Checkout}
+          options={() => ({headerShown: false})}
+        />
+        <Stack.Screen
+          name="PlaceOrder"
+          component={PlaceOrder}
           options={() => ({headerShown: false})}
         />
         <Stack.Screen

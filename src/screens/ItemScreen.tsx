@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {
   View,
@@ -24,6 +25,7 @@ export default function ItemScreen({route}) {
   const discountedPrice = item.discount
     ? item.discount * item.price
     : item.price;
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -92,7 +94,7 @@ export default function ItemScreen({route}) {
           </View>
         </View>
         <View style={styles.buyOptions}>
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('PlaceOrder', {item})}>
             <Image source={buyNowImage} style={styles.buyOptionsImage} />
           </Pressable>
           <Pressable>
