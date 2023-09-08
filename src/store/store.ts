@@ -1,11 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from '../slices/userSlice';
-import postReducer from '../slices/postSlice';
+import itemReducer from '../slices/itemSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    post: postReducer,
+    item: itemReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

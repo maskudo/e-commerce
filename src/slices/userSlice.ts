@@ -2,25 +2,25 @@ import {createSlice} from '@reduxjs/toolkit';
 export type User = {
   id: string;
   displayName?: string;
-  handle?: string;
-  posts?: string[];
-  likedPosts?: string[];
-  savedPosts?: string[];
-  followers?: string[];
-  following?: string[];
-  url?: string;
+  username?: string;
+  pincode?: number;
+  address?: string;
+  city?: string;
+  country?: string;
+  bankAccountNumber?: string;
+  accountHolderName?: string;
+  ifscCode?: string;
+  wishlist?: string[];
+  cart?: string[];
   email: string;
 };
 const initialState: User = {
   id: '',
   displayName: '',
-  handle: '',
-  posts: [],
-  likedPosts: [],
-  savedPosts: [],
-  followers: [],
-  following: [],
-  url: '',
+  username: '',
+  wishlist: [],
+  cart: [],
+  wishlist: [],
   email: '',
 };
 
@@ -30,28 +30,12 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {},
     setUserFromAuth: (state, action) => {
-      const {
-        displayName,
-        email,
-        handle,
-        posts,
-        likedPosts,
-        savedPosts,
-        followers,
-        following,
-        id,
-        url,
-      } = action.payload;
+      const {displayName, email, handle, posts, id} = action.payload;
       state.displayName = displayName;
       state.email = email;
-      state.handle = handle;
+      state.username = handle;
       state.posts = posts;
-      state.likedPosts = likedPosts;
-      state.savedPosts = savedPosts;
-      state.followers = followers;
-      state.following = following;
       state.id = id;
-      state.url = url;
     },
   },
 });
