@@ -19,7 +19,7 @@ export const ITEMS: ItemProps[] = [
     description:
       'very pretty looking pink dress Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.',
     price: 1500,
-    stars: 4,
+    stars: 2.5,
     discount: 50,
     reviews: 120000,
     image:
@@ -32,7 +32,7 @@ export const ITEMS: ItemProps[] = [
       'Flagship Sony smartphone with earphone jack and waterproofing',
     price: 25000,
     discount: 20,
-    stars: 4,
+    stars: 3,
     reviews: 5000,
     image: 'https://pngimg.com/uploads/smartphone/smartphone_PNG8533.png',
   },

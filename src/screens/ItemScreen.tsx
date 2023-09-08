@@ -9,6 +9,7 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
+import {AirbnbRating, Rating} from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Feather';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -23,16 +24,17 @@ export default function ItemScreen({route}) {
   const {item} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
   const discountedPrice = item.discount
-    ? item.discount * item.price
+    ? (1 - item.discount / 100) * item.price
     : item.price;
   const navigation = useNavigation();
+  const goBack = () => navigation.goBack();
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.header}>
-          <View>
+          <Pressable onPress={goBack}>
             <Icon name="chevron-left" size={30} color={COLORS.black} />
-          </View>
+          </Pressable>
           <View>
             <Icon name="shopping-cart" size={24} color={COLORS.black} />
           </View>
@@ -55,7 +57,12 @@ export default function ItemScreen({route}) {
           <Text>{item.name}</Text>
           <View style={styles.discountAndRating}>
             <View style={styles.rating}>
-              <Text style={styles.stars}>{item.stars}*</Text>
+              <Rating
+                fractions={2}
+                startingValue={item.stars}
+                type="star"
+                imageSize={13}
+              />
               <Text style={styles.reviews}>{item.reviews}</Text>
             </View>
             <View style={styles.discounts}>
@@ -180,6 +187,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 5,
   },
   greyAndCrossed: {

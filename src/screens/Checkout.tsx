@@ -7,6 +7,7 @@ import TYPOGRAPHY from '../constants/typography';
 import Item from '../components/checkout/Item';
 import {ITEMS} from '../constants/data';
 import {useState} from 'react';
+import SuccessModal from '../components/checkout/Modal';
 
 const PAYMENT_OPTIONS = [
   {type: 'visa', icon: 'cc-visa', accountNo: '*********2109'},
@@ -18,6 +19,15 @@ const PAYMENT_OPTIONS = [
 export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
+  const [modalVisible, setModalVisible] = useState(false);
+  const handlePayment = () => {
+    setModalVisible(true);
+    const id = setTimeout(() => {
+      setModalVisible(false);
+      navigation.navigate('Homepage');
+      clearTimeout(id);
+    }, 3000);
+  };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
   return (
     <View style={styles.container}>
@@ -103,10 +113,11 @@ export default function Checkout() {
             </Pressable>
           ))}
         </View>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={handlePayment}>
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
       </ScrollView>
+      <SuccessModal isVisible={modalVisible} />
     </View>
   );
 }

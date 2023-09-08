@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import {Rating} from 'react-native-ratings';
 
 export type ItemProps = {
   id: string;
@@ -21,7 +22,7 @@ export default function Item({
   height: number;
 }) {
   const discountedPrice = item.discount
-    ? item.discount * item.price
+    ? (1 - item.discount / 100) * item.price
     : item.price;
   const navigation = useNavigation();
   const handlePress = () => navigation.navigate('ItemScreen', {item});
@@ -44,7 +45,12 @@ export default function Item({
             )}
           </View>
           <View style={styles.rating}>
-            <Text style={styles.stars}>{item.stars}*</Text>
+            <Rating
+              fractions={2}
+              startingValue={item.stars}
+              type="star"
+              imageSize={12}
+            />
             <Text style={styles.reviews}>{item.reviews}</Text>
           </View>
         </View>
@@ -66,6 +72,7 @@ const styles = StyleSheet.create({
   itemInfo: {
     padding: 4,
     height: 125,
+    gap: 2,
   },
   image: {
     width: '100%',
@@ -99,6 +106,19 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 5,
+  },
+  stars: {
+    flex: 1,
+  },
+  starContainerStyle: {
+    width: 10,
+  },
+  reviews: {
+    color: COLORS.lightgray,
+  },
+  price: {
+    color: COLORS.black,
   },
 });

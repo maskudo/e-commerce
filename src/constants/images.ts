@@ -8,3 +8,4 @@ export const buyNowImage = require('../../assets/img/buynow.png');
 export const profileImage =
   'https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg';
 export const couponImage = require('../../assets/img/coupon.png');
+export const successStarImage = require('../../assets/img/successStar.png');

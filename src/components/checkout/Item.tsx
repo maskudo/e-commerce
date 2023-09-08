@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Rating} from 'react-native-ratings';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
 
@@ -21,7 +22,7 @@ export default function Item({
   height: number;
 }) {
   const discountedPrice = item.discount
-    ? item.discount * item.price
+    ? (1 - item.discount / 100) * item.price
     : item.price;
   const navigation = useNavigation();
   const handlePress = () => navigation.navigate('ItemScreen', {item});
@@ -33,8 +34,13 @@ export default function Item({
           <Text style={styles.name}>{item.name}</Text>
           <View style={styles.discountAndRating}>
             <View style={styles.rating}>
-              <Text style={styles.stars}>{item.stars}*</Text>
               <Text style={styles.reviews}>{item.reviews}</Text>
+              <Rating
+                fractions={2}
+                startingValue={item.stars}
+                type="star"
+                imageSize={13}
+              />
             </View>
             <View style={styles.discounts}>
               <Text style={styles.price}>${discountedPrice}</Text>
@@ -116,6 +122,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 5,
   },
   discounts: {
