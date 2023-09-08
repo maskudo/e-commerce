@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 export default function UserStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Swipe">
         <Stack.Screen
           name="Swipe"
           component={Swipe}

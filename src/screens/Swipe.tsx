@@ -1,78 +1,83 @@
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Octicons from 'react-native-vector-icons/Octicons';
+import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Swiper from 'react-native-swiper';
-import FONTS from '../constants/fonts';
+import {swiperImage1, swiperImage2, swiperImage3} from '../constants/images';
 
+// use next and prev button properties instead
 export default function Swipe() {
-  const navigation = useNavigation();
   return (
     <Swiper
       bounces={true}
       pagingEnabled={true}
       paginationStyle={{
         position: 'absolute',
-        bottom: 250,
+        bottom: 20,
       }}
       dot={<View style={styles.dot} />}
+      style={styles.swiper}
       activeDot={
         <View style={{...styles.dot, backgroundColor: COLORS.black}} />
       }>
-      <View style={styles.container}>
-        <View style={styles.welcomeContainer}>
-          <Text style={styles.welcome}>Welcome to </Text>
-          <Text style={styles.eCommerce}>eCommerce</Text>
-        </View>
-        <View style={styles.imageContainer} />
-        <View style={styles.next}>
-          <TouchableOpacity
-            style={styles.nextText}
-            onPress={() => navigation.navigate('Login')}
-          />
-          <Text style={styles.nextText}>
-            Next {'  '}
-            <Octicons name="arrow-right" style={{...styles.nextText}} />
-          </Text>
-        </View>
-        <View style={styles.blackContainerOutline} />
-        <View style={styles.blackContainer} />
-      </View>
-      <View style={styles.container}>
-        <View style={styles.welcomeContainer}>
-          <Text style={styles.welcome}>Welcome to </Text>
-          <Text style={styles.eCommerce}>eCommerce</Text>
-        </View>
-        <View style={styles.imageContainer} />
-        <View style={styles.next}>
-          <TouchableOpacity
-            style={styles.nextText}
-            onPress={() => navigation.navigate('Login')}>
-            <Text
-              style={{
-                ...styles.nextText,
-                fontFamily: FONTS.fontBold,
-                color: COLORS.black,
-              }}>
-              Next {'  '}
-              <Octicons
-                name="arrow-right"
-                style={{...styles.nextText, color: COLORS.black}}
-              />
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.blackContainerOutline} />
-        <View
-          style={{...styles.blackContainer, backgroundColor: COLORS.lightblue}}
+      <View>
+        <Screen
+          image={swiperImage1}
+          title={'Choose Products'}
+          description={
+            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
+          }
         />
+        <Text style={styles.next}>Next</Text>
+      </View>
+      <View>
+        <Screen
+          image={swiperImage2}
+          title={'Make Payment'}
+          description={
+            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
+          }
+        />
+        <Text style={styles.previous}>Prev</Text>
+        <Text style={styles.next}>Next</Text>
+      </View>
+      <View>
+        <Screen
+          image={swiperImage3}
+          title={'Get Your Order'}
+          description={
+            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
+          }
+        />
+        <Text style={styles.previous}>Prev</Text>
+        <Text style={styles.next}>Get Started</Text>
       </View>
     </Swiper>
   );
 }
 
+function Screen({image, title, description}) {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.screen}>
+      <TouchableOpacity
+        style={styles.skip}
+        onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.skipText}>Skip</Text>
+      </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        <Image source={image} style={styles.image} />
+      </View>
+      <View style={styles.text}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  swiper: {},
   dot: {
     borderWidth: 1,
     borderColor: COLORS.black,
@@ -88,60 +93,49 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: COLORS.white,
   },
-  welcomeContainer: {
-    height: '30%',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
+  screen: {
+    padding: 10,
+    height: '100%',
+    position: 'relative',
     alignItems: 'center',
   },
-  welcome: {
-    ...TYPOGRAPHY.bodyRegular,
+  imageContainer: {flex: 3 / 5, justifyContent: 'flex-end'},
+  text: {height: '40%', flex: 2 / 5, alignItems: 'center'},
+  title: {
+    ...TYPOGRAPHY.h2Bold,
+  },
+  description: {
+    textAlign: 'center',
+    ...TYPOGRAPHY.captions,
     color: COLORS.gray,
   },
-  eCommerce: {
-    ...TYPOGRAPHY.title,
-  },
-  imageContainer: {
-    height: '30%',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  image: {
-    height: '100%',
-  },
   next: {
-    height: '40%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    padding: '20%',
-    paddingRight: 40,
-  },
-  nextText: {
-    ...TYPOGRAPHY.buttonLarge,
-    color: COLORS.white,
-    zIndex: 2,
-  },
-  blackContainer: {
+    ...TYPOGRAPHY.h3,
+    color: COLORS.red,
+    textAlign: 'right',
+    width: '100%',
+    paddingRight: 10,
     position: 'absolute',
-    width: 240,
-    height: 240,
-    bottom: -40,
-    right: -40,
-    borderWidth: 1,
-    borderRadius: 79,
-    backgroundColor: COLORS.black,
-    transform: [{rotate: '45deg'}],
+    bottom: 10,
   },
-  blackContainerOutline: {
+  previous: {
+    ...TYPOGRAPHY.h3,
+    color: COLORS.red,
+    textAlign: 'left',
+    width: '100%',
+    paddingLeft: 10,
     position: 'absolute',
-    width: 255,
-    height: 260,
-    bottom: -45,
-    right: -45,
-    borderWidth: 1,
-    borderRadius: 79,
-    transform: [{rotate: '45deg'}],
+    bottom: 10,
+  },
+  skip: {
+    position: 'absolute',
+    width: '100%',
+    paddingRight: 10,
+    top: 10,
+  },
+  skipText: {
+    ...TYPOGRAPHY.h3,
+    color: COLORS.black,
+    textAlign: 'right',
   },
 });
