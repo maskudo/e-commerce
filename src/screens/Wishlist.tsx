@@ -6,16 +6,22 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import {PRODUCTS} from '../constants/data';
 import Item, {ItemProps} from '../components/common/Item';
 import FilterHeader from '../components/common/FilterHeader';
+import {useSelector} from 'react-redux';
+import {RootState} from '../store/store';
 
 export default function Wishlist() {
+  const user = useSelector((state: RootState) => state.user);
+  const wishlist = user?.wishlist?.map(itemId =>
+    PRODUCTS.find(i => i.id === itemId),
+  );
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollview}>
         <Header />
-        <FilterHeader title={'52000+ Items'} />
+        <FilterHeader title={`${wishlist?.length ?? 0} Items`} />
         <MasonryList
           contentContainerStyle={styles.items}
-          data={PRODUCTS}
+          data={wishlist}
           numColumns={2}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}

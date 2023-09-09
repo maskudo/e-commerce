@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableOpacity,
   ScrollView,
   Pressable,
 } from 'react-native';
@@ -13,16 +14,23 @@ import {Rating} from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Feather';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch} from 'react-redux';
 import FilterHeader from '../components/common/FilterHeader';
 import Item, {ItemProps} from '../components/common/Item';
 import COLORS from '../constants/colors';
 import {PRODUCTS} from '../constants/data';
-import {buyNowImage, goToCartImage} from '../constants/images';
 import TYPOGRAPHY from '../constants/typography';
+import {useSelector} from 'react-redux';
+import {updateUserCart, updateUserWishlist} from '../slices/userSlice';
+import {RootState} from '../store/store';
 
 export default function ItemScreen({route}) {
+  const user = useSelector((state: RootState) => state.user);
   const {item}: {item: ItemProps} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
+  const inUserWishlist = user.wishlist?.includes(item.id);
+  const inUserCart = user.cart?.includes(item.id);
   const discountedPrice = item.discount
     ? (1 - item.discount / 100) * item.price
     : item.price;
@@ -31,6 +39,25 @@ export default function ItemScreen({route}) {
   const similarProducts = PRODUCTS.filter(
     product => product.category === item.category,
   );
+  const dispatch = useDispatch();
+  const updateWishlist = () => {
+    dispatch(
+      updateUserWishlist({
+        itemId: item.id,
+        userId: user.id,
+        add: !inUserWishlist,
+      }),
+    );
+  };
+  const updateCart = () => {
+    dispatch(
+      updateUserCart({
+        itemId: item.id,
+        userId: user.id,
+        add: !inUserCart,
+      }),
+    );
+  };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -38,9 +65,6 @@ export default function ItemScreen({route}) {
           <Pressable onPress={goBack}>
             <Icon name="chevron-left" size={30} color={COLORS.black} />
           </Pressable>
-          <View>
-            <Icon name="shopping-cart" size={24} color={COLORS.black} />
-          </View>
         </View>
         <Swiper
           style={styles.swiper}
@@ -104,12 +128,27 @@ export default function ItemScreen({route}) {
           </View>
         </View>
         <View style={styles.buyOptions}>
-          <Pressable onPress={() => navigation.navigate('PlaceOrder', {item})}>
-            <Image source={buyNowImage} style={styles.buyOptionsImage} />
-          </Pressable>
-          <Pressable>
-            <Image source={goToCartImage} style={styles.buyOptionsImage} />
-          </Pressable>
+          <TouchableOpacity onPress={updateWishlist} style={styles.addToButton}>
+            <Text style={styles.addToButtonText}>
+              {inUserWishlist ? 'Unw' : 'W'}ishlist
+            </Text>
+            <Ionicon
+              name={inUserWishlist ? 'heart' : 'heart-outline'}
+              size={24}
+              color={COLORS.red}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={updateCart} style={styles.addToButton}>
+            <Text style={styles.addToButtonText}>
+              {inUserCart ? 'Remove from ' : 'Add to '}Cart
+            </Text>
+            <MaterialIcon
+              name={inUserCart ? 'remove-shopping-cart' : 'add-shopping-cart'}
+              size={24}
+              solid
+              color={COLORS.red}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.deliveryInContainer}>
           <Text style={styles.deliveryInText}>Delivery in</Text>
@@ -232,6 +271,7 @@ const styles = StyleSheet.create({
   },
   buyOptions: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 10,
   },
   buyOptionsImage: {
@@ -278,5 +318,16 @@ const styles = StyleSheet.create({
 
   items: {
     gap: 10,
+  },
+  addToButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 2,
+    borderColor: COLORS.lightergray,
+    backgroundColor: COLORS.white,
+    width: '45%',
+    padding: 10,
   },
 });

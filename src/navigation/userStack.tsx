@@ -47,7 +47,7 @@ function TabScreen() {
   const navigation = useNavigation();
   return (
     <Tab.Navigator
-      initialRouteName={'Wishlist'}
+      initialRouteName={'Homepage'}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: COLORS.red,
@@ -73,8 +73,8 @@ function TabScreen() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={Profile}
+        name="Cart"
+        component={Checkout}
         options={{
           tabBarIcon: ({size, color}) => (
             <Icon name={'shopping-cart'} color={color} size={size} />

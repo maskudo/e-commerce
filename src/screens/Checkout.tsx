@@ -8,6 +8,8 @@ import Item from '../components/checkout/Item';
 import {PRODUCTS} from '../constants/data';
 import {useState} from 'react';
 import SuccessModal from '../components/checkout/Modal';
+import {useSelector} from 'react-redux';
+import {RootState} from '../store/store';
 
 const PAYMENT_OPTIONS = [
   {type: 'visa', icon: 'cc-visa', accountNo: '*********2109'},
@@ -19,7 +21,11 @@ const PAYMENT_OPTIONS = [
 export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
+  const user = useSelector((state: RootState) => state.user);
   const [modalVisible, setModalVisible] = useState(false);
+  const cartItems = user?.cart?.map(itemId =>
+    PRODUCTS.find(i => i.id === itemId),
+  );
   const handlePayment = () => {
     setModalVisible(true);
     const id = setTimeout(() => {
@@ -29,6 +35,7 @@ export default function Checkout() {
     }, 3000);
   };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
+  const [totalOrderAmount, setTotalOrderAmount] = useState(0);
   return (
     <View style={styles.container}>
       <ScrollView
@@ -64,15 +71,20 @@ export default function Checkout() {
         <View style={styles.shoppingList}>
           <Text style={styles.shoppingListTitle}>Shopping List</Text>
           <View>
-            <Item item={PRODUCTS[0]} />
-            <Item item={PRODUCTS[1]} />
+            {cartItems.map(item => (
+              <Item
+                item={item}
+                key={item.id}
+                setTotalOrderAmount={setTotalOrderAmount}
+              />
+            ))}
           </View>
         </View>
         <View style={styles.hr} />
         <View style={styles.totalCost}>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Order</Text>
-            <Text style={styles.totalCostText}>$7000</Text>
+            <Text style={styles.totalCostText}>${totalOrderAmount}</Text>
           </View>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Shipping</Text>
@@ -83,7 +95,7 @@ export default function Checkout() {
               Total
             </Text>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-              $7030
+              ${totalOrderAmount}
             </Text>
           </View>
         </View>

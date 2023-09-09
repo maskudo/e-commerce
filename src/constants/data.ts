@@ -13,6 +13,7 @@ export const PRODUCTS: ItemProps[] = [
       rate: 3.9,
       count: 120,
     },
+    discount: 10,
   },
   {
     id: 2,

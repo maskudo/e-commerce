@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {nanoid} from 'nanoid';
 import {
   StyleSheet,
   Text,
@@ -8,14 +9,39 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Feather';
+import {useSelector} from 'react-redux';
 import COLORS from '../constants/colors';
-import {profileImage} from '../constants/images';
+import {updateUserProfilePicture} from '../slices/userSlice';
 import TYPOGRAPHY from '../constants/typography';
+import {RootState} from '../store/store';
+import storage from '@react-native-firebase/storage';
+import {useDispatch} from 'react-redux';
 
 export default function Profile() {
   const navigation = useNavigation();
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
   const goBack = () => navigation.goBack();
+
+  const handleClickProfileImage = async () => {
+    const image = await ImageCropPicker.openPicker({
+      cropping: false,
+    });
+    const filename = nanoid().toString();
+    const reference = storage().ref(filename);
+    const fileRef = storage().ref(filename);
+    await fileRef.putFile(image.path);
+    const download_link = await reference.getDownloadURL();
+    dispatch(
+      updateUserProfilePicture({
+        imageUrl: download_link,
+        userId: user.id,
+        errorCallback: () => fileRef.delete(),
+      }),
+    );
+  };
   return (
     <View style={styles.container}>
       <ScrollView
@@ -31,12 +57,18 @@ export default function Profile() {
         </View>
         <View style={styles.profilePic}>
           <View style={styles.imageContainerOutline}>
-            <Pressable style={styles.imageContainer} onPress={() => {}}>
-              <Image
-                source={{uri: profileImage}}
-                style={styles.profileImage}
-                resizeMode="cover"
-              />
+            <Pressable
+              style={styles.imageContainer}
+              onPress={handleClickProfileImage}>
+              {user?.image ? (
+                <Image
+                  source={{uri: user.image}}
+                  style={styles.profileImage}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Icon name="user" size={50} color={COLORS.black} />
+              )}
             </Pressable>
           </View>
         </View>
@@ -44,7 +76,11 @@ export default function Profile() {
           <Text style={styles.sectionTitle}>Personal Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Email Address</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <TextInput
+              style={styles.textInput}
+              hitSlop={20}
+              placeholder={user.email}
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Password</Text>

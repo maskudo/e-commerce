@@ -1,22 +1,51 @@
 import {useNavigation} from '@react-navigation/native';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {Rating} from 'react-native-ratings';
+import {useEffect, useState} from 'react';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import {useDispatch, useSelector} from 'react-redux';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import {updateUserCart} from '../../slices/userSlice';
+import {RootState} from '../../store/store';
 import {ItemProps} from '../common/Item';
 
 export default function Item({
   item,
   height,
+  setTotalOrderAmount,
 }: {
   item: ItemProps;
   height: number;
+  setTotalOrderAmount: () => void;
 }) {
-  const discountedPrice = item.discount
-    ? (1 - item.discount / 100) * item.price
-    : item.price;
+  const discountedPrice = (1 - (item.discount ?? 0) / 100) * item.price;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.user.id);
   const handlePress = () => navigation.navigate('ItemScreen', {item});
+  const [qty, setQty] = useState(1);
+  const decCount = () =>
+    setQty(q => {
+      Math.max(q - 1, 1);
+    });
+  const incCount = () => setQty(q => Math.min(q + 1, 10));
+  const updateCart = () => {
+    dispatch(
+      updateUserCart({
+        itemId: item.id,
+        userId,
+        add: false,
+      }),
+    );
+  };
+
   return (
     <Pressable style={[styles.item, {height: height}]} onPress={handlePress}>
       <View style={styles.itemInfoContainer}>
@@ -24,15 +53,6 @@ export default function Item({
         <View style={styles.itemInfo}>
           <Text style={styles.name}>{item.name}</Text>
           <View style={styles.discountAndRating}>
-            <View style={styles.rating}>
-              <Text style={styles.reviews}>{item.rating.count}</Text>
-              <Rating
-                fractions={2}
-                startingValue={item.rating.rate}
-                type="star"
-                imageSize={13}
-              />
-            </View>
             <View style={styles.discounts}>
               <Text style={styles.price}>${discountedPrice}</Text>
               {!!item.discount && (
@@ -42,13 +62,27 @@ export default function Item({
                 </View>
               )}
             </View>
+            <View style={styles.counterAndDeleteContainer}>
+              <View style={styles.counterContainer}>
+                <TouchableOpacity onPress={decCount}>
+                  <Icon name="minus" size={30} style={styles.counterIcon} />
+                </TouchableOpacity>
+                <Text style={styles.counterText}>{qty}</Text>
+                <TouchableOpacity onPress={incCount}>
+                  <Icon name="plus" size={30} style={styles.counterIcon} />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity onPress={updateCart}>
+                <Icon name="trash" size={30} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
       <View style={styles.hr} />
       <View style={styles.totalOrder}>
-        <Text style={styles.totalOrderText}>Total Order(1):</Text>
-        <Text style={styles.totalOrderText}>${discountedPrice}</Text>
+        <Text style={styles.totalOrderText}>Total Order({qty}):</Text>
+        <Text style={styles.totalOrderText}>${qty * discountedPrice}</Text>
       </View>
     </Pressable>
   );
@@ -77,8 +111,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   itemInfo: {
-    padding: 10,
+    paddingHorizontal: 10,
     height: 125,
+    justifyContent: 'space-between',
+    flex: 1,
   },
   image: {
     height: 125,
@@ -99,7 +135,7 @@ const styles = StyleSheet.create({
   },
   discountAndRating: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   discountInfo: {
     marginHorizontal: 10,
@@ -111,10 +147,16 @@ const styles = StyleSheet.create({
     color: COLORS.red,
     fontSize: 8,
   },
-  rating: {
+  counterAndDeleteContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    justifyContent: 'space-between',
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 120,
   },
   discounts: {
     flexDirection: 'row',
@@ -141,5 +183,15 @@ const styles = StyleSheet.create({
   totalOrderText: {
     ...TYPOGRAPHY.h2Bold,
     fontSize: 12,
+  },
+  counterIcon: {
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.lightgray,
+    borderRadius: 10,
+  },
+  counterText: {
+    ...TYPOGRAPHY.h3,
   },
 });
