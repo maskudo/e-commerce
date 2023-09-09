@@ -5,13 +5,16 @@ import TYPOGRAPHY from '../../constants/typography';
 import {Rating} from 'react-native-ratings';
 
 export type ItemProps = {
-  id: string;
+  id: string | number;
   name: string;
   description: string;
+  category: string;
   price: number;
   discount?: number;
-  stars: number;
-  reviews: number;
+  rating: {
+    rate: number;
+    count: number;
+  };
   image: string;
 };
 export default function Item({
@@ -30,7 +33,9 @@ export default function Item({
     <Pressable style={[styles.item, {height: height}]} onPress={handlePress}>
       <Image source={{uri: item.image}} style={styles.image} />
       <View style={styles.itemInfo}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.name} numberOfLines={2} ellipsizeMode="tail">
+          {item.name}
+        </Text>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.description}>
           {item.description}
         </Text>
@@ -47,11 +52,11 @@ export default function Item({
           <View style={styles.rating}>
             <Rating
               fractions={2}
-              startingValue={item.stars}
+              startingValue={item.rating.rate}
               type="star"
               imageSize={12}
             />
-            <Text style={styles.reviews}>{item.reviews}</Text>
+            <Text style={styles.reviews}>{item.rating.count}</Text>
           </View>
         </View>
       </View>

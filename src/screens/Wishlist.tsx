@@ -3,7 +3,7 @@ import Header from '../components/common/Header';
 import TYPOGRAPHY from '../constants/typography';
 import React from 'react';
 import MasonryList from '@react-native-seoul/masonry-list';
-import {ITEMS} from '../constants/data';
+import {PRODUCTS} from '../constants/data';
 import Item, {ItemProps} from '../components/common/Item';
 import FilterHeader from '../components/common/FilterHeader';
 
@@ -15,7 +15,7 @@ export default function Wishlist() {
         <FilterHeader title={'52000+ Items'} />
         <MasonryList
           contentContainerStyle={styles.items}
-          data={ITEMS}
+          data={PRODUCTS}
           numColumns={2}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}

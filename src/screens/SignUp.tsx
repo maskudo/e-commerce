@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Icon from 'react-native-vector-icons/Feather';
@@ -21,6 +23,28 @@ export default function SignUp() {
     Keyboard.dismiss();
     if (email && password) {
       console.log({email, password});
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('User account created & signed in!');
+          const collection = firestore().collection('Users');
+          collection.add({
+            displayName: email.split('@')[0],
+            username: email.split('@')[0],
+            wishlist: [],
+            cart: [],
+            email: email,
+          });
+        })
+        .catch(err => {
+          if (err.code === 'auth/email-already-in-use') {
+            setError('That email address is already in use!');
+          } else if (err.code === 'auth/invalid-email') {
+            setError('That email address is invalid!');
+          } else {
+            console.log(err.code);
+          }
+        });
     }
     setPassword('');
     setEmail('');
@@ -28,8 +52,7 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <View style={styles.eCommerce}>
-        <Text style={styles.name}>eCommerce</Text>
-        <Text style={styles.slogan}>Connecting people</Text>
+        <Text style={styles.name}>Create an Account</Text>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.textInputContainer}>
@@ -132,7 +155,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     ...TYPOGRAPHY.h3,
-    color: COLORS.black,
+    color: COLORS.white,
   },
   signInContainer: {
     flexDirection: 'row',

@@ -13,6 +13,7 @@ export type User = {
   wishlist?: string[];
   cart?: string[];
   email: string;
+  image?: string;
 };
 const initialState: User = {
   id: '',
@@ -20,7 +21,6 @@ const initialState: User = {
   username: '',
   wishlist: [],
   cart: [],
-  wishlist: [],
   email: '',
 };
 
@@ -34,7 +34,8 @@ const userSlice = createSlice({
       state.displayName = displayName;
       state.email = email;
       state.username = handle;
-      state.posts = posts;
+      state.cart = posts;
+      state.wishlist = posts;
       state.id = id;
     },
   },

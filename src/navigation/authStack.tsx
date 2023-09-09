@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 export default function AuthStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Swipe">
         <Stack.Screen
           name="Swipe"
           component={Swipe}

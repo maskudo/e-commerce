@@ -9,25 +9,28 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import {AirbnbRating, Rating} from 'react-native-ratings';
+import {Rating} from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Feather';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FilterHeader from '../components/common/FilterHeader';
-import Item from '../components/common/Item';
+import Item, {ItemProps} from '../components/common/Item';
 import COLORS from '../constants/colors';
-import {ITEMS} from '../constants/data';
+import {PRODUCTS} from '../constants/data';
 import {buyNowImage, goToCartImage} from '../constants/images';
 import TYPOGRAPHY from '../constants/typography';
 
 export default function ItemScreen({route}) {
-  const {item} = route.params;
+  const {item}: {item: ItemProps} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
   const discountedPrice = item.discount
     ? (1 - item.discount / 100) * item.price
     : item.price;
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
+  const similarProducts = PRODUCTS.filter(
+    product => product.category === item.category,
+  );
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -59,11 +62,11 @@ export default function ItemScreen({route}) {
             <View style={styles.rating}>
               <Rating
                 fractions={2}
-                startingValue={item.stars}
+                startingValue={item.rating.rate}
                 type="star"
                 imageSize={13}
               />
-              <Text style={styles.reviews}>{item.reviews}</Text>
+              <Text style={styles.reviews}>{item.rating.count}</Text>
             </View>
             <View style={styles.discounts}>
               {!!item.discount && (
@@ -126,7 +129,7 @@ export default function ItemScreen({route}) {
         <ScrollView horizontal={true}>
           <FlatList
             contentContainerStyle={styles.items}
-            data={ITEMS}
+            data={similarProducts}
             numColumns={2}
             keyExtractor={itemEl => itemEl.id}
             showsHorizontalScrollIndicator={false}

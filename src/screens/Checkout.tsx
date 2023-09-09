@@ -5,7 +5,7 @@ import BrandIcon from 'react-native-vector-icons/FontAwesome5';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Item from '../components/checkout/Item';
-import {ITEMS} from '../constants/data';
+import {PRODUCTS} from '../constants/data';
 import {useState} from 'react';
 import SuccessModal from '../components/checkout/Modal';
 
@@ -64,8 +64,8 @@ export default function Checkout() {
         <View style={styles.shoppingList}>
           <Text style={styles.shoppingListTitle}>Shopping List</Text>
           <View>
-            <Item item={ITEMS[0]} />
-            <Item item={ITEMS[1]} />
+            <Item item={PRODUCTS[0]} />
+            <Item item={PRODUCTS[1]} />
           </View>
         </View>
         <View style={styles.hr} />

@@ -3,11 +3,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import COLORS from '../constants/colors';
-import Swipe from '../screens/Swipe';
 import {StyleSheet} from 'react-native';
 import Profile from '../screens/Profile';
-import Login from '../screens/Login';
-import SignUp from '../screens/SignUp';
 import Homepage from '../screens/Homepage';
 import Wishlist from '../screens/Wishlist';
 import ItemScreen from '../screens/ItemScreen';
@@ -20,22 +17,7 @@ const Tab = createBottomTabNavigator();
 export default function UserStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Swipe">
-        <Stack.Screen
-          name="Swipe"
-          component={Swipe}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={() => ({headerShown: false})}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={() => ({headerShown: false})}
-        />
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="StackProfile"
           component={Profile}
@@ -97,6 +79,7 @@ function TabScreen() {
           tabBarIcon: ({size, color}) => (
             <Icon name={'shopping-cart'} color={color} size={size} />
           ),
+          tabBarShowLabel: false,
         }}
       />
       <Tab.Screen

@@ -3,17 +3,8 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Rating} from 'react-native-ratings';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import {ItemProps} from '../common/Item';
 
-export type ItemProps = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount?: number;
-  stars: number;
-  reviews: number;
-  image: string;
-};
 export default function Item({
   item,
   height,
@@ -34,10 +25,10 @@ export default function Item({
           <Text style={styles.name}>{item.name}</Text>
           <View style={styles.discountAndRating}>
             <View style={styles.rating}>
-              <Text style={styles.reviews}>{item.reviews}</Text>
+              <Text style={styles.reviews}>{item.rating.count}</Text>
               <Rating
                 fractions={2}
-                startingValue={item.stars}
+                startingValue={item.rating.rate}
                 type="star"
                 imageSize={13}
               />

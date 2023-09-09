@@ -62,7 +62,7 @@ function Screen({image, title, description}) {
     <View style={styles.screen}>
       <TouchableOpacity
         style={styles.skip}
-        onPress={() => navigation.navigate('Home')}>
+        onPress={() => navigation.navigate('Login')}>
         <Text style={styles.skipText}>Skip</Text>
       </TouchableOpacity>
       <View style={styles.imageContainer}>

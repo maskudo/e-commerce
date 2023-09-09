@@ -6,14 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Button,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,8 +35,7 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <View style={styles.eCommerce}>
-        <Text style={styles.name}>eCommerce</Text>
-        <Text style={styles.slogan}>Connecting people</Text>
+        <Text style={styles.name}>Welcome Back</Text>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.textInputContainer}>

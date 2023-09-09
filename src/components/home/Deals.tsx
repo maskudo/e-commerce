@@ -1,5 +1,5 @@
 import {FlatList, Pressable, StyleSheet, View, Text} from 'react-native';
-import {ITEMS} from '../../constants/data';
+import {PRODUCTS} from '../../constants/data';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Item from '../common/Item';
 import COLORS from '../../constants/colors';
@@ -23,7 +23,7 @@ export default function Deals() {
       </View>
       <FlatList
         contentContainerStyle={styles.items}
-        data={ITEMS}
+        data={PRODUCTS}
         horizontal={true}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}

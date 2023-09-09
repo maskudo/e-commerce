@@ -1,9 +1,21 @@
-import {View, Text, Image, TextInput, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import {useSelector} from 'react-redux';
 import COLORS from '../../constants/colors';
 import {logoImage} from '../../constants/images';
+import {RootState} from '../../store/store';
 
 export default function Header() {
+  const profileImage = useSelector((state: RootState) => state?.user?.image);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -18,9 +30,20 @@ export default function Header() {
           />
           <Text>Stylish</Text>
         </View>
-        <Text>
-          <Icon name="user" size={32} color={COLORS.black} />
-        </Text>
+
+        <Pressable
+          style={styles.imageContainer}
+          onPress={() => navigation.navigate('Profile')}>
+          {profileImage ? (
+            <Image
+              source={{uri: profileImage}}
+              style={styles.profileImage}
+              resizeMode="cover"
+            />
+          ) : (
+            <Icon name="user" size={32} color={COLORS.black} />
+          )}
+        </Pressable>
       </View>
       <View style={styles.searchBarContainer}>
         <Text>
@@ -60,4 +83,20 @@ const styles = StyleSheet.create({
     borderColor: COLORS.black,
   },
   searchBar: {},
+  profileImage: {
+    position: 'absolute',
+    width: 45,
+    height: 45,
+  },
+  imageContainer: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.red,
+  },
 });
