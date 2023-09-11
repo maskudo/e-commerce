@@ -22,15 +22,17 @@ import COLORS from '../constants/colors';
 import {PRODUCTS} from '../constants/data';
 import TYPOGRAPHY from '../constants/typography';
 import {useSelector} from 'react-redux';
-import {updateUserCart, updateUserWishlist} from '../slices/userSlice';
+import {updateUserWishlist} from '../slices/userSlice';
 import {RootState} from '../store/store';
+import {updateUserCart} from '../slices/cartSlice';
 
 export default function ItemScreen({route}) {
   const user = useSelector((state: RootState) => state.user);
+  const cart = useSelector((state: RootState) => state.cart);
   const {item}: {item: ItemProps} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
   const inUserWishlist = user.wishlist?.includes(item.id);
-  const inUserCart = user.cart?.includes(item.id);
+  const inUserCart = cart?.items?.find(i => i.itemId === item.id);
   const discountedPrice = item.discount
     ? (1 - item.discount / 100) * item.price
     : item.price;
@@ -164,7 +166,7 @@ export default function ItemScreen({route}) {
             <Text style={styles.compareText}>Add to Compare</Text>
           </View>
         </View>
-        <FilterHeader title={'282+ Items'} />
+        <FilterHeader title={`${similarProducts?.length ?? 0} Similar Items`} />
         <ScrollView horizontal={true}>
           <FlatList
             contentContainerStyle={styles.items}

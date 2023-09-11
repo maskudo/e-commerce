@@ -1,21 +1,16 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {ToastAndroid} from 'react-native';
-import {itemId} from './itemSlice';
 
-export type userId = string | number;
+export type userId = string;
+export type itemId = string | number;
 
 export type User = {
   id: userId;
   displayName?: string;
   username?: string;
   wishlist?: itemId[];
-  cart?: [
-    {
-      itemId: itemId;
-      qty: number;
-    },
-  ];
+  cart?: string;
   email: string;
   image?: string;
   businessAddressDetail?: {
@@ -35,7 +30,7 @@ const initialState: User = {
   displayName: '',
   username: '',
   wishlist: [],
-  cart: [],
+  cart: '',
   email: '',
 };
 
@@ -63,29 +58,29 @@ export const updateUserWishlist = createAsyncThunk(
     }
   },
 );
-export const updateUserCart = createAsyncThunk(
-  'uses/cart',
-  async ({
-    userId,
-    itemId,
-    add,
-  }: {
-    userId: userId;
-    itemId: itemId;
-    add: boolean;
-  }) => {
-    const userRef = firestore().collection('Users').doc(userId);
-    if (add) {
-      await userRef.update({
-        cart: firestore.FieldValue.arrayUnion(itemId),
-      });
-    } else {
-      await userRef.update({
-        cart: firestore.FieldValue.arrayRemove(itemId),
-      });
-    }
-  },
-);
+// export const updateUserCart = createAsyncThunk(
+//   'uses/cart',
+//   async ({
+//     userId,
+//     itemId,
+//     add,
+//   }: {
+//     userId: userId;
+//     itemId: itemId;
+//     add: boolean;
+//   }) => {
+//     const userRef = firestore().collection('Users').doc(userId);
+//     if (add) {
+//       await userRef.update({
+//         cart: firestore.FieldValue.arrayUnion({itemId, qty: 0}),
+//       });
+//     } else {
+//       await userRef.update({
+//         cart: firestore.FieldValue.arrayRemove(itemId),
+//       });
+//     }
+//   },
+// );
 
 export const updateUserProfilePicture = createAsyncThunk(
   'uses/profilePic',
@@ -137,15 +132,15 @@ const userSlice = createSlice({
         );
       })
       .addCase(updateUserWishlist.fulfilled, () => {})
-      .addCase(updateUserCart.pending, () => {})
-      .addCase(updateUserCart.rejected, () => {
-        ToastAndroid.showWithGravity(
-          'Error updating Cart',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      })
-      .addCase(updateUserCart.fulfilled, () => {})
+      // .addCase(updateUserCart.pending, () => {})
+      // .addCase(updateUserCart.rejected, () => {
+      //   ToastAndroid.showWithGravity(
+      //     'Error updating Cart',
+      //     ToastAndroid.SHORT,
+      //     ToastAndroid.CENTER,
+      //   );
+      // })
+      // .addCase(updateUserCart.fulfilled, () => {})
       .addCase(updateUserProfilePicture.pending, () => {})
       .addCase(updateUserProfilePicture.rejected, () => {
         ToastAndroid.showWithGravity(

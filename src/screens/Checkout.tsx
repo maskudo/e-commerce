@@ -22,10 +22,12 @@ export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
   const user = useSelector((state: RootState) => state.user);
+  const cart = useSelector((state: RootState) => state.cart);
   const [modalVisible, setModalVisible] = useState(false);
-  const cartItems = user?.cart?.map(itemId =>
-    PRODUCTS.find(i => i.id === itemId),
+  const cartItems = cart?.items?.map(item =>
+    PRODUCTS.find(i => i.id === item.itemId),
   );
+  console.log({cart});
   const handlePayment = () => {
     setModalVisible(true);
     const id = setTimeout(() => {
@@ -35,7 +37,10 @@ export default function Checkout() {
     }, 3000);
   };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
-  const [totalOrderAmount, setTotalOrderAmount] = useState(0);
+  const [orderAmount, setOrderAmount] = useState(0);
+  const disableButton = !selectedPaymentOption || !cartItems?.length;
+  const shippingAmount = 0.001 * orderAmount;
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -71,31 +76,37 @@ export default function Checkout() {
         <View style={styles.shoppingList}>
           <Text style={styles.shoppingListTitle}>Shopping List</Text>
           <View>
-            {cartItems.map(item => (
-              <Item
-                item={item}
-                key={item.id}
-                setTotalOrderAmount={setTotalOrderAmount}
-              />
-            ))}
+            {cartItems?.length ? (
+              cartItems.map(item => (
+                <Item
+                  item={item}
+                  key={item.id}
+                  setOrderAmount={setOrderAmount}
+                />
+              ))
+            ) : (
+              <Text style={styles.emptyCart}>No items in Cart : (</Text>
+            )}
           </View>
         </View>
         <View style={styles.hr} />
         <View style={styles.totalCost}>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Order</Text>
-            <Text style={styles.totalCostText}>${totalOrderAmount}</Text>
+            <Text style={styles.totalCostText}>${orderAmount}</Text>
           </View>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Shipping</Text>
-            <Text style={styles.totalCostText}>$30</Text>
+            <Text style={styles.totalCostText}>
+              ${Math.round(orderAmount * 0.001)}
+            </Text>
           </View>
           <View style={[styles.totalCostTextContainer]}>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
               Total
             </Text>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-              ${totalOrderAmount}
+              ${orderAmount}
             </Text>
           </View>
         </View>
@@ -125,7 +136,15 @@ export default function Checkout() {
             </Pressable>
           ))}
         </View>
-        <Pressable style={styles.button} onPress={handlePayment}>
+        <Pressable
+          style={[
+            styles.button,
+            {
+              backgroundColor: disableButton ? COLORS.lightgray : COLORS.red,
+            },
+          ]}
+          onPress={handlePayment}
+          disabled={disableButton}>
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
       </ScrollView>
@@ -251,7 +270,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: COLORS.red,
     borderRadius: 5,
+  },
+  emptyCart: {
+    ...TYPOGRAPHY.h2Bold,
   },
 });
