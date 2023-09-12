@@ -57,13 +57,24 @@ export const populateCart = createAsyncThunk('cart/fetch', async ({userId}) => {
   return res;
 });
 
+export const updateCartItem = createAsyncThunk(
+  'cart/item/update',
+  async ({cartItemId, qty}: {cartItemId: string; qty: number}) => {
+    const col = firestore().collection('CartItems').doc(cartItemId);
+    const docRef = await col.get();
+    docRef.ref.update({
+      qty: qty,
+    });
+    return {cartItemId, qty};
+  },
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(updateUserCart.pending, () => {})
       .addCase(updateUserCart.rejected, () => {
         ToastAndroid.showWithGravity(
           'Error updating Cart',
@@ -86,6 +97,21 @@ const cartSlice = createSlice({
       })
       .addCase(populateCart.fulfilled, (state, action) => {
         state.items = action.payload;
+      })
+      .addCase(updateCartItem.pending, () => {})
+      .addCase(updateCartItem.fulfilled, (state, action) => {
+        state.items = state.items.map(item =>
+          item.id === action.payload.cartItemId
+            ? {...item, qty: action.payload.qty}
+            : {...item},
+        );
+      })
+      .addCase(updateCartItem.rejected, () => {
+        ToastAndroid.showWithGravity(
+          'Error updating CartItem',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
       });
   },
 });

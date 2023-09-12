@@ -21,13 +21,14 @@ const PAYMENT_OPTIONS = [
 export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
-  const user = useSelector((state: RootState) => state.user);
   const cart = useSelector((state: RootState) => state.cart);
   const [modalVisible, setModalVisible] = useState(false);
-  const cartItems = cart?.items?.map(item =>
-    PRODUCTS.find(i => i.id === item.itemId),
-  );
-  console.log({cart});
+  const cartItems = cart?.items?.map(item => {
+    let prod = PRODUCTS.find(i => i.id === item.itemId);
+    if (prod) {
+      return {...prod, qty: item.qty};
+    }
+  });
   const handlePayment = () => {
     setModalVisible(true);
     const id = setTimeout(() => {
@@ -37,9 +38,11 @@ export default function Checkout() {
     }, 3000);
   };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
-  const [orderAmount, setOrderAmount] = useState(0);
+  const orderAmount = Math.round(
+    cartItems.reduce((total, i) => (total += i?.qty * i?.price), 0),
+  );
   const disableButton = !selectedPaymentOption || !cartItems?.length;
-  const shippingAmount = 0.001 * orderAmount;
+  const shippingAmount = Math.round(0.001 * orderAmount);
 
   return (
     <View style={styles.container}>
@@ -77,13 +80,7 @@ export default function Checkout() {
           <Text style={styles.shoppingListTitle}>Shopping List</Text>
           <View>
             {cartItems?.length ? (
-              cartItems.map(item => (
-                <Item
-                  item={item}
-                  key={item.id}
-                  setOrderAmount={setOrderAmount}
-                />
-              ))
+              cartItems.map(item => <Item item={item} key={item.id} />)
             ) : (
               <Text style={styles.emptyCart}>No items in Cart : (</Text>
             )}
@@ -97,16 +94,14 @@ export default function Checkout() {
           </View>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Shipping</Text>
-            <Text style={styles.totalCostText}>
-              ${Math.round(orderAmount * 0.001)}
-            </Text>
+            <Text style={styles.totalCostText}>{shippingAmount}</Text>
           </View>
           <View style={[styles.totalCostTextContainer]}>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
               Total
             </Text>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-              ${orderAmount}
+              {orderAmount + shippingAmount}
             </Text>
           </View>
         </View>

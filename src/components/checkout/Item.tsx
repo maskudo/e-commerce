@@ -12,30 +12,37 @@ import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
-import {updateUserCart} from '../../slices/userSlice';
+import {updateCartItem, updateUserCart} from '../../slices/cartSlice';
 import {RootState} from '../../store/store';
 import {ItemProps} from '../common/Item';
 
 export default function Item({
   item,
   height,
-  setTotalOrderAmount,
 }: {
   item: ItemProps;
   height: number;
-  setTotalOrderAmount: () => void;
 }) {
   const discountedPrice = (1 - (item.discount ?? 0) / 100) * item.price;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.user.id);
+  const cart = useSelector((state: RootState) => state.cart);
+  const cartItem = cart.items.find(i => i.itemId === item.id);
   const handlePress = () => navigation.navigate('ItemScreen', {item});
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(cartItem?.qty ?? 1);
   const decCount = () =>
     setQty(q => {
-      Math.max(q - 1, 1);
+      let val = Math.max(q - 1, 1);
+      dispatch(updateCartItem({cartItemId: cartItem.id, qty: val}));
+      return val;
     });
-  const incCount = () => setQty(q => Math.min(q + 1, 10));
+  const incCount = () =>
+    setQty(q => {
+      let val = Math.min(q + 1, 10);
+      dispatch(updateCartItem({cartItemId: cartItem.id, qty: val}));
+      return val;
+    });
   const updateCart = () => {
     dispatch(
       updateUserCart({
