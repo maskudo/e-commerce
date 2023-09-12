@@ -20,9 +20,9 @@ export type User = {
     country?: string;
   };
   bankAccountDetails?: {
-    bankAccountNumber?: string;
+    bankAccountNumber?: number;
     accountHolderName?: string;
-    ifscCode?: string;
+    ifscCode?: number;
   };
 };
 const initialState: User = {
@@ -58,29 +58,6 @@ export const updateUserWishlist = createAsyncThunk(
     }
   },
 );
-// export const updateUserCart = createAsyncThunk(
-//   'uses/cart',
-//   async ({
-//     userId,
-//     itemId,
-//     add,
-//   }: {
-//     userId: userId;
-//     itemId: itemId;
-//     add: boolean;
-//   }) => {
-//     const userRef = firestore().collection('Users').doc(userId);
-//     if (add) {
-//       await userRef.update({
-//         cart: firestore.FieldValue.arrayUnion({itemId, qty: 0}),
-//       });
-//     } else {
-//       await userRef.update({
-//         cart: firestore.FieldValue.arrayRemove(itemId),
-//       });
-//     }
-//   },
-// );
 
 export const updateUserProfilePicture = createAsyncThunk(
   'uses/profilePic',
@@ -103,6 +80,30 @@ export const updateUserProfilePicture = createAsyncThunk(
     }
   },
 );
+export const updateUsername = createAsyncThunk(
+  'user/username',
+  async ({
+    oldUsername,
+    newUsername,
+  }: {
+    oldUsername: string;
+    newUsername: string;
+  }) => {
+    const col = firestore().collection('Users');
+    const newUsernameDocs = await col
+      .where('username', '==', newUsername)
+      .get();
+    if (newUsernameDocs.docs.length > 0) {
+      return {message: `Username ${newUsername} taken`};
+    }
+    const docs = await col.where('username', '==', oldUsername).get();
+    const ref = docs.docs[0].ref;
+    ref.update({
+      username: newUsername,
+    });
+    return {message: 'Username changed successfully'};
+  },
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -110,12 +111,12 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {},
     setUserFromAuth: (state, action) => {
-      const {displayName, email, handle, wishlist, id, cart, image} =
+      const {displayName, email, username, wishlist, id, cart, image} =
         action.payload;
       state.displayName = displayName;
       state.email = email;
       state.image = image;
-      state.username = handle;
+      state.username = username;
       state.cart = cart;
       state.wishlist = wishlist;
       state.id = id;
@@ -123,33 +124,36 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(updateUserWishlist.pending, () => {})
       .addCase(updateUserWishlist.rejected, () => {
         ToastAndroid.showWithGravity(
           'Error updating Wishlist',
           ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
+          ToastAndroid.BOTTOM,
         );
       })
-      .addCase(updateUserWishlist.fulfilled, () => {})
-      // .addCase(updateUserCart.pending, () => {})
-      // .addCase(updateUserCart.rejected, () => {
-      //   ToastAndroid.showWithGravity(
-      //     'Error updating Cart',
-      //     ToastAndroid.SHORT,
-      //     ToastAndroid.CENTER,
-      //   );
-      // })
-      // .addCase(updateUserCart.fulfilled, () => {})
-      .addCase(updateUserProfilePicture.pending, () => {})
       .addCase(updateUserProfilePicture.rejected, () => {
         ToastAndroid.showWithGravity(
           'Error updating ProfilePicture',
           ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
+          ToastAndroid.BOTTOM,
         );
       })
-      .addCase(updateUserProfilePicture.fulfilled, () => {});
+      .addCase(updateUsername.rejected, (state, action) => {
+        let message = 'Error updating Username';
+        ToastAndroid.showWithGravity(
+          message,
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .addCase(updateUsername.fulfilled, (state, action) => {
+        let message = action.payload.message;
+        ToastAndroid.showWithGravity(
+          message,
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      });
   },
 });
 

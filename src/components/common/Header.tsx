@@ -19,9 +19,10 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>
-          <Icon name="menu" size={32} color={COLORS.black} />
-        </Text>
+        <View
+          style={[styles.imageContainer, {backgroundColor: COLORS.lightgray}]}>
+          <Icon name="menu" size={24} color={COLORS.black} />
+        </View>
         <View style={styles.headerMiddle}>
           <Image
             source={logoImage}
@@ -47,11 +48,15 @@ export default function Header() {
       </View>
       <View style={styles.searchBarContainer}>
         <Text>
-          <Icon name="search" size={14} color={COLORS.black} />
+          <Icon name="search" size={20} color={COLORS.gray} />
         </Text>
-        <TextInput style={styles.searchBar} placeholder="Search any Product" />
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search any Product"
+          placeholderTextColor={COLORS.gray}
+        />
         <Text>
-          <Icon name="mic" size={14} color={COLORS.black} />
+          <Icon name="mic" size={20} color={COLORS.gray} />
         </Text>
       </View>
     </View>
@@ -78,7 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 40,
-    borderWidth: 1,
+    backgroundColor: COLORS.white,
+    borderRadius: 6,
     paddingHorizontal: 20,
     borderColor: COLORS.black,
   },

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   itemInfo: {
     padding: 4,
-    height: 125,
+    height: 140,
     gap: 2,
   },
   image: {

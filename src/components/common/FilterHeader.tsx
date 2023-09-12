@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
@@ -8,16 +8,16 @@ export default function FilterHeader({title}: {title: string}) {
       <Text style={styles.featureText}>{title}</Text>
       <View style={styles.filterCategory}>
         <View>
-          <Text>
-            Sort
+          <TouchableOpacity style={styles.filterButton}>
+            <Text style={styles.filterText}>Sort</Text>
             <Icon name="filter" size={14} color={COLORS.black} />
-          </Text>
+          </TouchableOpacity>
         </View>
         <View>
-          <Text>
-            Filter
+          <TouchableOpacity style={styles.filterButton}>
+            <Text style={styles.filterText}>Filter</Text>
             <Icon name="filter" size={14} color={COLORS.black} />
-          </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -33,9 +33,24 @@ const styles = StyleSheet.create({
   filterCategory: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 10,
   },
   featureText: {
     ...TYPOGRAPHY.h3,
     fontWeight: 'bold',
+  },
+  filterButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 61,
+    height: 24,
+    borderRadius: 6,
+    backgroundColor: COLORS.white,
+    gap: 5,
+  },
+  filterText: {
+    ...TYPOGRAPHY.captions,
+    color: COLORS.black,
   },
 });

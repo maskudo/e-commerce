@@ -10,6 +10,8 @@ import Wishlist from '../screens/Wishlist';
 import ItemScreen from '../screens/ItemScreen';
 import PlaceOrder from '../screens/PlaceOrder';
 import Checkout from '../screens/Checkout';
+import {View} from 'react-native';
+import CategoryScreen from '../screens/CategoryScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,6 +34,11 @@ export default function UserStack() {
           name="PlaceOrder"
           component={PlaceOrder}
           options={() => ({headerShown: false})}
+        />
+        <Stack.Screen
+          name="Category"
+          component={CategoryScreen}
+          options={({route}) => ({title: route.params.category})}
         />
         <Stack.Screen
           name="Home"
@@ -77,9 +84,11 @@ function TabScreen() {
         component={Checkout}
         options={{
           tabBarIcon: ({size, color}) => (
-            <Icon name={'shopping-cart'} color={color} size={size} />
+            <View style={styles.shoppingIcon}>
+              <Icon name={'shopping-cart'} color={color} size={size} />
+            </View>
           ),
-          tabBarShowLabel: false,
+          tabBarLabel: '',
         }}
       />
       <Tab.Screen
@@ -125,4 +134,22 @@ const styles = StyleSheet.create({
     transform: [{rotate: '-45deg'}],
   },
   tabBarStyle: {},
+  shoppingIcon: {
+    backgroundColor: COLORS.white,
+    width: 56,
+    height: 56,
+    borderRadius: 50,
+    zIndex: 1000,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 20,
+    marginBottom: 10,
+  },
 });

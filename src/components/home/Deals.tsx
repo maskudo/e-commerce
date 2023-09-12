@@ -6,6 +6,8 @@ import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
 
 export default function Deals() {
+  const deals = PRODUCTS.filter(item => item.discount);
+
   return (
     <View>
       <View style={styles.deal}>
@@ -23,7 +25,7 @@ export default function Deals() {
       </View>
       <FlatList
         contentContainerStyle={styles.items}
-        data={PRODUCTS}
+        data={deals}
         horizontal={true}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}

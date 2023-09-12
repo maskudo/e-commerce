@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Pressable,
+  TouchableOpacity,
   Image,
   TextInput,
 } from 'react-native';
@@ -18,17 +19,39 @@ import TYPOGRAPHY from '../constants/typography';
 import {RootState} from '../store/store';
 import storage from '@react-native-firebase/storage';
 import {useDispatch} from 'react-redux';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+
+type Inputs = {
+  username: string;
+  businessAddressDetail?: {
+    pincode?: number;
+    address?: string;
+    city?: string;
+    country?: string;
+  };
+  bankAccountDetails?: {
+    bankAccountNumber?: number;
+    accountHolderName?: string;
+    ifscCode?: number;
+  };
+};
 
 export default function Profile() {
+  const {handleSubmit, control} = useForm<Inputs>();
   const navigation = useNavigation();
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const goBack = () => navigation.goBack();
 
   const handleClickProfileImage = async () => {
-    const image = await ImageCropPicker.openPicker({
-      cropping: false,
-    });
+    let image;
+    try {
+      image = await ImageCropPicker.openPicker({
+        cropping: false,
+      });
+    } catch (e) {
+      return;
+    }
     const filename = nanoid().toString();
     const reference = storage().ref(filename);
     const fileRef = storage().ref(filename);
@@ -42,6 +65,10 @@ export default function Profile() {
       }),
     );
   };
+  const onSubmit = data => {
+    console.log(data);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -75,59 +102,163 @@ export default function Profile() {
         <View style={styles.detailSection}>
           <Text style={styles.sectionTitle}>Personal Details</Text>
           <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Email Address</Text>
-            <TextInput
-              style={styles.textInput}
-              hitSlop={20}
-              placeholder={user.email}
+            <Text style={styles.inputLabel}>Username</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  placeholder={user.username}
+                  placeholderTextColor={COLORS.lightgray}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="username"
             />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Password</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
           </View>
         </View>
         <View style={styles.detailSection}>
           <Text style={styles.sectionTitle}>Business Address Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Pincode</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="businessAddressDetail.pincode"
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Address</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="businessAddressDetail.address"
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>City</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>State</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="businessAddressDetail.city"
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Country</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="businessAddressDetail.country"
+            />
           </View>
         </View>
         <View style={styles.detailSection}>
           <Text style={styles.sectionTitle}>Bank Account Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Bank Account Number</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="bankAccountDetails.bankAccountNumber"
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Account Holder's Name</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="bankAccountDetails.accountHolderName"
+            />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>IFSC Code</Text>
-            <TextInput style={styles.textInput} hitSlop={20} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.textInput}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="bankAccountDetails.ifscCode"
+            />
           </View>
         </View>
-        <Pressable style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>Save</Text>
-        </Pressable>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -155,8 +286,9 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     marginTop: 20,
-    flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
   },
   profileImage: {
     position: 'absolute',
@@ -220,5 +352,9 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: COLORS.red,
     borderRadius: 5,
+  },
+  handle: {
+    ...TYPOGRAPHY.bodyRegular,
+    color: 'gray',
   },
 });
