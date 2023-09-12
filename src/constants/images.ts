@@ -15,3 +15,4 @@ export const successStarImage = require('../../assets/img/successStar.png');
 export const swiperImage1 = require('../../assets/img/swipe1.png');
 export const swiperImage2 = require('../../assets/img/swipe2.png');
 export const swiperImage3 = require('../../assets/img/swipe3.png');
+export const menuIcon = require('../../assets/img/menuIcon.png');

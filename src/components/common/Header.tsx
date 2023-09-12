@@ -10,7 +10,8 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import {useSelector} from 'react-redux';
 import COLORS from '../../constants/colors';
-import {logoImage} from '../../constants/images';
+import {logoImage, menuIcon} from '../../constants/images';
+import TYPOGRAPHY from '../../constants/typography';
 import {RootState} from '../../store/store';
 
 export default function Header() {
@@ -20,8 +21,11 @@ export default function Header() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View
-          style={[styles.imageContainer, {backgroundColor: COLORS.lightgray}]}>
-          <Icon name="menu" size={24} color={COLORS.black} />
+          style={[
+            styles.imageContainer,
+            {backgroundColor: COLORS.lightergray},
+          ]}>
+          <Image source={menuIcon} style={styles.menuIcon} resizeMode="cover" />
         </View>
         <View style={styles.headerMiddle}>
           <Image
@@ -29,7 +33,7 @@ export default function Header() {
             style={styles.logoImage}
             resizeMode="cover"
           />
-          <Text>Stylish</Text>
+          <Text style={styles.logoText}>Stylish</Text>
         </View>
 
         <Pressable
@@ -78,6 +82,11 @@ const styles = StyleSheet.create({
   logoImage: {
     height: 34,
   },
+  logoText: {
+    ...TYPOGRAPHY.h2Bold,
+    fontSize: 18,
+    color: COLORS.blue,
+  },
   searchBarContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -105,4 +114,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.lightpink,
   },
+  menuIcon: {},
 });

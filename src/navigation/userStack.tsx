@@ -36,11 +36,6 @@ export default function UserStack() {
           options={() => ({headerShown: false})}
         />
         <Stack.Screen
-          name="Category"
-          component={CategoryScreen}
-          options={({route}) => ({title: route.params.category})}
-        />
-        <Stack.Screen
           name="Home"
           component={TabScreen}
           options={() => ({headerShown: false})}
@@ -92,6 +87,15 @@ function TabScreen() {
         }}
       />
       <Tab.Screen
+        name="Search"
+        component={Profile}
+        options={{
+          tabBarIcon: ({size, color}) => (
+            <Icon name={'search'} color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={Profile}
         listeners={() => ({
@@ -114,12 +118,10 @@ function TabScreen() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={Profile}
+        name="Category"
+        component={CategoryScreen}
         options={{
-          tabBarIcon: ({size, color}) => (
-            <Icon name={'settings'} color={color} size={size} />
-          ),
+          tabBarButton: () => null,
         }}
       />
     </Tab.Navigator>
