@@ -15,6 +15,7 @@ import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
 import {updateCartItem, updateUserCart} from '../../slices/cartSlice';
 import {RootState} from '../../store/store';
+import {currencyFormatter} from '../../utils/functions';
 import {ItemProps} from '../common/Item';
 
 export default function Item({
@@ -58,11 +59,15 @@ export default function Item({
           <Text style={styles.name}>{item.name}</Text>
           <View style={styles.discountAndRating}>
             <View style={styles.discounts}>
-              <Text style={styles.price}>${discountedPrice}</Text>
+              <Text style={styles.price}>
+                {currencyFormatter.format(discountedPrice)}
+              </Text>
               {!!item.discount && (
                 <View style={styles.discountInfo}>
                   <Text style={styles.discount}>Upto {item.discount}%Off</Text>
-                  <Text style={styles.greyAndCrossed}>${item.price}</Text>
+                  <Text style={styles.greyAndCrossed}>
+                    {currencyFormatter.format(item.price)}
+                  </Text>
                 </View>
               )}
             </View>

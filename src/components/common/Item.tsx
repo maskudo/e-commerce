@@ -3,6 +3,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
 import {Rating} from 'react-native-ratings';
+import {currencyFormatter} from '../../utils/functions';
 
 export type ItemProps = {
   id: string | number;
@@ -41,10 +42,14 @@ export default function Item({
         </Text>
         <View style={styles.discountAndRating}>
           <View style={styles.discounts}>
-            <Text style={styles.price}>${discountedPrice}</Text>
+            <Text style={styles.price}>
+              {currencyFormatter.format(discountedPrice)}
+            </Text>
             {!!item.discount && (
               <View style={styles.discountInfo}>
-                <Text style={styles.greyAndCrossed}>${item.price}</Text>
+                <Text style={styles.greyAndCrossed}>
+                  {currencyFormatter.format(item.price)}
+                </Text>
                 <Text style={styles.discount}>{item.discount}%Off</Text>
               </View>
             )}

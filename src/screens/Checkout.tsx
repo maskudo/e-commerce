@@ -9,6 +9,7 @@ import {useState} from 'react';
 import SuccessModal from '../components/checkout/Modal';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/store';
+import {currencyFormatter} from '../utils/functions';
 
 const PAYMENT_OPTIONS = [
   {type: 'visa', icon: 'cc-visa', accountNo: '*********2109'},
@@ -38,11 +39,12 @@ export default function Checkout() {
     }, 3000);
   };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
-  const orderAmount = Math.round(
-    cartItems.reduce((total, i) => total + i?.qty * i?.price ?? 0, 0),
+  const orderAmount = cartItems.reduce(
+    (total, i) => total + i?.qty * i?.price ?? 0,
+    0,
   );
   const disableButton = !selectedPaymentOption || !cartItems?.length;
-  const shippingAmount = Math.round(0.001 * orderAmount);
+  const shippingAmount = 0.001 * orderAmount;
 
   return (
     <View style={styles.container}>
@@ -90,18 +92,22 @@ export default function Checkout() {
         <View style={styles.totalCost}>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Order</Text>
-            <Text style={styles.totalCostText}>${orderAmount}</Text>
+            <Text style={styles.totalCostText}>
+              {currencyFormatter.format(orderAmount)}
+            </Text>
           </View>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Shipping</Text>
-            <Text style={styles.totalCostText}>${shippingAmount}</Text>
+            <Text style={styles.totalCostText}>
+              {currencyFormatter.format(shippingAmount)}
+            </Text>
           </View>
           <View style={[styles.totalCostTextContainer]}>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
               Total
             </Text>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-              ${orderAmount + shippingAmount}
+              {currencyFormatter.format(orderAmount + shippingAmount)}
             </Text>
           </View>
         </View>
