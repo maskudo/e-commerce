@@ -6,7 +6,7 @@ import TYPOGRAPHY from '../../constants/typography';
 import {useSelector} from 'react-redux';
 
 export default function Deals() {
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
   const deals = products.filter(item => item.discount);
 
   return (

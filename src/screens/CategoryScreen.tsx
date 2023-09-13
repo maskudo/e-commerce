@@ -8,7 +8,7 @@ import Header from '../components/common/Header';
 
 export default function CategoryScreen({route}) {
   const category = route?.params?.category;
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
 
   const categoryItems = products.filter(item => item.category === category);
   return (

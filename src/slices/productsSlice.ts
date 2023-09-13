@@ -12,17 +12,7 @@ export const fetchAllProducts = createAsyncThunk('products/fetch', async () => {
   });
   return res;
 });
-const initialState: {
-  loading: boolean;
-  error: boolean;
-  message: string;
-  items: ItemProps[];
-} = {
-  loading: true,
-  items: [],
-  error: false,
-  message: '',
-};
+const initialState: ItemProps[] = [];
 const productsSlice = createSlice({
   name: 'products',
   initialState,
@@ -30,9 +20,6 @@ const productsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchAllProducts.rejected, state => {
-        state.loading = false;
-        state.error = true;
-        state.message = 'Error loading Products';
         ToastAndroid.showWithGravity(
           'Error updating Cart',
           ToastAndroid.SHORT,
@@ -40,8 +27,7 @@ const productsSlice = createSlice({
         );
       })
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.items = action.payload;
+        return action.payload;
       });
   },
 });

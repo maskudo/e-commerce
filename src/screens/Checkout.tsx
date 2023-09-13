@@ -22,7 +22,7 @@ export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
   const cart = useSelector((state: RootState) => state.cart);
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
   const [modalVisible, setModalVisible] = useState(false);
   const cartItems = cart?.items?.map(item => {
     let prod = products.find(i => i.id === item.itemId);

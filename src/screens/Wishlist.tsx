@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import VariableFlatlist from '../components/common/VariableFlatlist';
@@ -7,12 +7,15 @@ import FilterHeader from '../components/common/FilterHeader';
 import Header from '../components/common/Header';
 import {ItemProps} from '../components/common/Item';
 
+// TODO:fix wishlist not being immediately updated
 export default function Wishlist() {
   const user = useSelector((state: RootState) => state.user);
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
   const wishlist =
     user?.wishlist?.map(itemId => products.find(i => i.id === itemId)) ?? [];
   const [searchedContent, setSearchedContent] = useState<ItemProps[]>(wishlist);
+  const [filteredContent, setFilteredContent] =
+    useState<ItemProps[]>(searchedContent);
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollview}>
@@ -20,8 +23,13 @@ export default function Wishlist() {
           originalItems={wishlist}
           setSearchedContent={setSearchedContent}
         />
-        <FilterHeader title={'Wishlist'} />
-        <VariableFlatlist data={searchedContent} />
+        <FilterHeader
+          title={'Wishlist'}
+          originalItems={wishlist}
+          setFilteredItems={setFilteredContent}
+          filteredItems={filteredContent}
+        />
+        <VariableFlatlist data={filteredContent} />
       </ScrollView>
     </View>
   );

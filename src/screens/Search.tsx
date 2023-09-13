@@ -7,7 +7,7 @@ import VariableFlatlist from '../components/common/VariableFlatlist';
 import {RootState} from '../store/store';
 
 export default function Search() {
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
   const [searchedContent, setSearchedContent] = useState<ItemProps[]>([]);
 
   return (

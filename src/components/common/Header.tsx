@@ -37,7 +37,6 @@ export default function Header({
       setSearchedContent(originalItems);
       return;
     }
-    console.log(debouncedSearchText);
     const content = originalItems.filter(
       item =>
         item.name.toLowerCase().includes(searchText) ||

@@ -45,7 +45,6 @@ export const updateUserWishlist = createAsyncThunk(
     itemId: itemId;
     add: boolean;
   }) => {
-    console.log({itemId, add, userId});
     const userRef = firestore().collection('Users').doc(userId);
     if (add) {
       await userRef.update({
@@ -56,6 +55,7 @@ export const updateUserWishlist = createAsyncThunk(
         wishlist: firestore.FieldValue.arrayRemove(itemId),
       });
     }
+    return {itemId, add};
   },
 );
 
@@ -123,13 +123,6 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(updateUserWishlist.rejected, () => {
-        ToastAndroid.showWithGravity(
-          'Error updating Wishlist',
-          ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM,
-        );
-      })
       .addCase(updateUserProfilePicture.rejected, () => {
         ToastAndroid.showWithGravity(
           'Error updating ProfilePicture',
@@ -149,6 +142,30 @@ const userSlice = createSlice({
         let message = action.payload.message;
         ToastAndroid.showWithGravity(
           message,
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .addCase(updateUserWishlist.fulfilled, (state, action) => {
+        if (state?.wishlist?.length) {
+          if (action.payload.add) {
+            state.wishlist = [...state.wishlist, action.payload.itemId];
+          } else {
+            state.wishlist = state.wishlist.filter(
+              id => id === action.payload.itemId,
+            );
+          }
+        } else {
+          if (action.payload.add) {
+            state.wishlist = [action.payload.itemId];
+          } else {
+            state.wishlist = [];
+          }
+        }
+      })
+      .addCase(updateUserWishlist.rejected, () => {
+        ToastAndroid.showWithGravity(
+          'Failed updating Wishlist',
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );

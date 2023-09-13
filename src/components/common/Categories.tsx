@@ -16,7 +16,7 @@ import {
 } from '../../constants/images';
 import TYPOGRAPHY from '../../constants/typography';
 
-const CATEGORIES = [
+export const CATEGORIES = [
   {
     id: 1,
     name: 'Mens',

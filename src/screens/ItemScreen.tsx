@@ -28,7 +28,7 @@ import {updateUserCart} from '../slices/cartSlice';
 export default function ItemScreen({route}) {
   const user = useSelector((state: RootState) => state.user);
   const cart = useSelector((state: RootState) => state.cart);
-  const products = useSelector((state: RootState) => state.products.items);
+  const products = useSelector((state: RootState) => state.products);
   const {item}: {item: ItemProps} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
   const inUserWishlist = user.wishlist?.includes(item.id);
