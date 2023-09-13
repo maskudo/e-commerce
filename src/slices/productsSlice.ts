@@ -12,7 +12,12 @@ export const fetchAllProducts = createAsyncThunk('products/fetch', async () => {
   });
   return res;
 });
-const initialState = {
+const initialState: {
+  loading: boolean;
+  error: boolean;
+  message: string;
+  items: ItemProps[];
+} = {
   loading: true,
   items: [],
   error: false,
