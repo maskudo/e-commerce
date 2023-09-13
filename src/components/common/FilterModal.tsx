@@ -121,9 +121,9 @@ export default function FilterModal({
             </View>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={setInvisible}>
-            <Text style={styles.buttonText}>Apply Filter</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity style={styles.button} onPress={setInvisible}> */}
+          {/*   <Text style={styles.buttonText}>Apply Filter</Text> */}
+          {/* </TouchableOpacity> */}
         </View>
       </Pressable>
     </Modal>
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 6,
     padding: 10,
+    paddingBottom: 30,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

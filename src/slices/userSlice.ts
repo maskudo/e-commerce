@@ -146,23 +146,6 @@ const userSlice = createSlice({
           ToastAndroid.BOTTOM,
         );
       })
-      .addCase(updateUserWishlist.fulfilled, (state, action) => {
-        if (state?.wishlist?.length) {
-          if (action.payload.add) {
-            state.wishlist = [...state.wishlist, action.payload.itemId];
-          } else {
-            state.wishlist = state.wishlist.filter(
-              id => id === action.payload.itemId,
-            );
-          }
-        } else {
-          if (action.payload.add) {
-            state.wishlist = [action.payload.itemId];
-          } else {
-            state.wishlist = [];
-          }
-        }
-      })
       .addCase(updateUserWishlist.rejected, () => {
         ToastAndroid.showWithGravity(
           'Failed updating Wishlist',

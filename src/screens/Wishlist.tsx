@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import VariableFlatlist from '../components/common/VariableFlatlist';
@@ -7,7 +7,6 @@ import FilterHeader from '../components/common/FilterHeader';
 import Header from '../components/common/Header';
 import {ItemProps} from '../components/common/Item';
 
-// TODO:fix wishlist not being immediately updated
 export default function Wishlist() {
   const user = useSelector((state: RootState) => state.user);
   const products = useSelector((state: RootState) => state.products);
@@ -25,7 +24,7 @@ export default function Wishlist() {
         />
         <FilterHeader
           title={'Wishlist'}
-          originalItems={wishlist}
+          originalItems={searchedContent}
           setFilteredItems={setFilteredContent}
           filteredItems={filteredContent}
         />
