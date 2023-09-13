@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import {useDebounce} from '@uidotdev/usehooks';
+import {useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -31,18 +32,9 @@ export default function Item({
   const cartItem = cart.items.find(i => i.itemId === item.id);
   const handlePress = () => navigation.navigate('ItemScreen', {item});
   const [qty, setQty] = useState(cartItem?.qty ?? 1);
-  const decCount = () =>
-    setQty(q => {
-      let val = Math.max(q - 1, 1);
-      dispatch(updateCartItem({cartItemId: cartItem.id, qty: val}));
-      return val;
-    });
-  const incCount = () =>
-    setQty(q => {
-      let val = Math.min(q + 1, 10);
-      dispatch(updateCartItem({cartItemId: cartItem.id, qty: val}));
-      return val;
-    });
+  const debouncedQty = useDebounce(qty, 1000);
+  const decCount = () => setQty(q => Math.max(q - 1, 1));
+  const incCount = () => setQty(q => Math.min(q + 1, 10));
   const updateCart = () => {
     dispatch(
       updateUserCart({
@@ -52,6 +44,11 @@ export default function Item({
       }),
     );
   };
+  useEffect(() => {
+    if (debouncedQty !== cartItem?.qty) {
+      dispatch(updateCartItem({cartItemId: cartItem.id, qty}));
+    }
+  }, [debouncedQty]);
 
   return (
     <Pressable style={[styles.item, {height: height}]} onPress={handlePress}>

@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {useDebounce} from '@uidotdev/usehooks';
 import {useEffect, useState} from 'react';
 import {
   View,
@@ -27,6 +28,7 @@ export default function Header({
   const profileImage = useSelector((state: RootState) => state?.user?.image);
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
+  const debouncedSearchText = useDebounce(searchText, 200);
   useEffect(() => {
     if (!(originalItems && setSearchedContent)) {
       return;
@@ -35,6 +37,7 @@ export default function Header({
       setSearchedContent(originalItems);
       return;
     }
+    console.log(debouncedSearchText);
     const content = originalItems.filter(
       item =>
         item.name.toLowerCase().includes(searchText) ||
@@ -42,7 +45,7 @@ export default function Header({
         item.category.toLowerCase().includes(searchText),
     );
     setSearchedContent(content);
-  }, [searchText]);
+  }, [debouncedSearchText]);
 
   return (
     <View style={styles.container}>
