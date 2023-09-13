@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,10 +15,35 @@ import COLORS from '../../constants/colors';
 import {logoImage, menuIcon} from '../../constants/images';
 import TYPOGRAPHY from '../../constants/typography';
 import {RootState} from '../../store/store';
+import {ItemProps} from './Item';
 
-export default function Header() {
+export default function Header({
+  originalItems,
+  setSearchedContent,
+}: {
+  originalItems?: ItemProps[];
+  setSearchedContent?: (items: ItemProps[]) => void;
+}) {
   const profileImage = useSelector((state: RootState) => state?.user?.image);
   const navigation = useNavigation();
+  const [searchText, setSearchText] = useState('');
+  useEffect(() => {
+    if (!(originalItems && setSearchedContent)) {
+      return;
+    }
+    if (searchText === '') {
+      setSearchedContent(originalItems);
+      return;
+    }
+    const content = originalItems.filter(
+      item =>
+        item.name.toLowerCase().includes(searchText) ||
+        item.description.toLowerCase().includes(searchText) ||
+        item.category.toLowerCase().includes(searchText),
+    );
+    setSearchedContent(content);
+  }, [searchText]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -57,6 +83,8 @@ export default function Header() {
         </Text>
         <TextInput
           style={styles.searchBar}
+          value={searchText}
+          onChangeText={text => setSearchText(text)}
           placeholder="Search any Product"
           placeholderTextColor={COLORS.gray}
         />

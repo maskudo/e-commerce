@@ -12,6 +12,7 @@ import PlaceOrder from '../screens/PlaceOrder';
 import Checkout from '../screens/Checkout';
 import {View} from 'react-native';
 import CategoryScreen from '../screens/CategoryScreen';
+import Search from '../screens/Search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,7 +89,7 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Search"
-        component={Profile}
+        component={Search}
         options={{
           tabBarIcon: ({size, color}) => (
             <Icon name={'search'} color={color} size={size} />
