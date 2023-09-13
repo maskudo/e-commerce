@@ -5,7 +5,6 @@ import BrandIcon from 'react-native-vector-icons/FontAwesome5';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Item from '../components/checkout/Item';
-import {PRODUCTS} from '../constants/data';
 import {useState} from 'react';
 import SuccessModal from '../components/checkout/Modal';
 import {useSelector} from 'react-redux';
@@ -22,9 +21,10 @@ export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
   const cart = useSelector((state: RootState) => state.cart);
+  const products = useSelector((state: RootState) => state.products.items);
   const [modalVisible, setModalVisible] = useState(false);
   const cartItems = cart?.items?.map(item => {
-    let prod = PRODUCTS.find(i => i.id === item.itemId);
+    let prod = products.find(i => i.id === item.itemId);
     if (prod) {
       return {...prod, qty: item.qty};
     }
@@ -39,7 +39,7 @@ export default function Checkout() {
   };
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null);
   const orderAmount = Math.round(
-    cartItems.reduce((total, i) => (total += i?.qty * i?.price), 0),
+    cartItems.reduce((total, i) => total + i?.qty * i?.price ?? 0, 0),
   );
   const disableButton = !selectedPaymentOption || !cartItems?.length;
   const shippingAmount = Math.round(0.001 * orderAmount);
@@ -94,14 +94,14 @@ export default function Checkout() {
           </View>
           <View style={styles.totalCostTextContainer}>
             <Text style={styles.totalCostText}>Shipping</Text>
-            <Text style={styles.totalCostText}>{shippingAmount}</Text>
+            <Text style={styles.totalCostText}>${shippingAmount}</Text>
           </View>
           <View style={[styles.totalCostTextContainer]}>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
               Total
             </Text>
             <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-              {orderAmount + shippingAmount}
+              ${orderAmount + shippingAmount}
             </Text>
           </View>
         </View>

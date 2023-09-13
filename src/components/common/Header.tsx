@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useSelector} from 'react-redux';
@@ -20,13 +21,13 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View
+        <TouchableOpacity
           style={[
             styles.imageContainer,
             {backgroundColor: COLORS.lightergray},
           ]}>
           <Image source={menuIcon} style={styles.menuIcon} resizeMode="cover" />
-        </View>
+        </TouchableOpacity>
         <View style={styles.headerMiddle}>
           <Image
             source={logoImage}

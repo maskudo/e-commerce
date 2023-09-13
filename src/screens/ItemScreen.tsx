@@ -19,7 +19,6 @@ import {useDispatch} from 'react-redux';
 import FilterHeader from '../components/common/FilterHeader';
 import Item, {ItemProps} from '../components/common/Item';
 import COLORS from '../constants/colors';
-import {PRODUCTS} from '../constants/data';
 import TYPOGRAPHY from '../constants/typography';
 import {useSelector} from 'react-redux';
 import {updateUserWishlist} from '../slices/userSlice';
@@ -29,6 +28,7 @@ import {updateUserCart} from '../slices/cartSlice';
 export default function ItemScreen({route}) {
   const user = useSelector((state: RootState) => state.user);
   const cart = useSelector((state: RootState) => state.cart);
+  const products = useSelector((state: RootState) => state.products.items);
   const {item}: {item: ItemProps} = route.params;
   const [numberOfLines, setNumberOfLines] = useState(6);
   const inUserWishlist = user.wishlist?.includes(item.id);
@@ -38,7 +38,7 @@ export default function ItemScreen({route}) {
     : item.price;
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
-  const similarProducts = PRODUCTS.filter(
+  const similarProducts = products.filter(
     product => product.category === item.category,
   );
   const dispatch = useDispatch();

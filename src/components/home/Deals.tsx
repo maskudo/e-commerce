@@ -1,12 +1,13 @@
 import {FlatList, Pressable, StyleSheet, View, Text} from 'react-native';
-import {PRODUCTS} from '../../constants/data';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Item from '../common/Item';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import {useSelector} from 'react-redux';
 
 export default function Deals() {
-  const deals = PRODUCTS.filter(item => item.discount);
+  const products = useSelector((state: RootState) => state.products.items);
+  const deals = products.filter(item => item.discount);
 
   return (
     <View>

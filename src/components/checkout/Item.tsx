@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   discountAndRating: {
     flex: 1,
     justifyContent: 'space-around',
+    gap: 10,
   },
   discountInfo: {
     marginHorizontal: 10,

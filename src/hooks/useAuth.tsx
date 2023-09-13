@@ -4,6 +4,7 @@ import {setUserFromAuth} from '../slices/userSlice';
 import {useDispatch} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import {populateCart} from '../slices/cartSlice';
+import {fetchAllProducts} from '../slices/productsSlice';
 
 export function useAuth() {
   const [user, setUser] = useState<any>();
@@ -22,6 +23,7 @@ export function useAuth() {
               const userData = res.docs[0];
               dispatch(setUserFromAuth({...userData.data(), id: userData.id}));
               dispatch(populateCart({userId: userData.id}));
+              dispatch(fetchAllProducts());
             },
             error => {
               console.log(error);
