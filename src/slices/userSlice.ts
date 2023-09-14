@@ -80,6 +80,51 @@ export const updateUserProfilePicture = createAsyncThunk(
     }
   },
 );
+export const updateUser = createAsyncThunk(
+  'user/user',
+  async ({
+    userId,
+    username,
+    businessAddressDetail,
+    bankAccountDetails,
+  }: {
+    userId: string;
+    businessAddressDetail: any;
+    username: string;
+    bankAccountDetails: any;
+  }) => {
+    const col = firestore().collection('Users');
+    try {
+      const user = col.doc(userId);
+      let res = await user.update({
+        businessAddressDetail: JSON.parse(
+          JSON.stringify(businessAddressDetail),
+        ),
+        bankAccountDetails: JSON.parse(JSON.stringify(bankAccountDetails)),
+        username,
+      });
+      console.log({res});
+    } catch (e) {
+      console.log({error: e});
+    }
+  },
+);
+export const updateBusinessAddressDetail = createAsyncThunk(
+  'user/businessAddressDetail',
+  async ({
+    userId,
+    businessAddressDetail,
+  }: {
+    userId: string;
+    businessAddressDetail: any;
+  }) => {
+    const col = firestore().collection('Users');
+    const user = col.doc(userId);
+    await user.update({
+      businessAddressDetail,
+    });
+  },
+);
 export const updateUsername = createAsyncThunk(
   'user/username',
   async ({
@@ -149,6 +194,20 @@ const userSlice = createSlice({
       .addCase(updateUserWishlist.rejected, () => {
         ToastAndroid.showWithGravity(
           'Failed updating Wishlist',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .addCase(updateUser.rejected, () => {
+        ToastAndroid.showWithGravity(
+          'Failed updating User',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .addCase(updateBusinessAddressDetail.rejected, () => {
+        ToastAndroid.showWithGravity(
+          'Failed updating Business Address Details',
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );

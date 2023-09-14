@@ -5,11 +5,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import * as yup from 'yup';
+import {updateUser, updateUsername} from '../../slices/userSlice';
 
 type Inputs = {
   username: string | undefined;
@@ -31,7 +34,24 @@ const UserDetailsValidationSchema = yup.object().shape({
     .string()
     .required('Username is Required')
     .min(3, ({min}) => `Username must be at least ${min} characters`)
-    .max(20, ({max}) => `Username must be at most ${max} characters`),
+    .max(20, ({max}) => `Username must be at most ${max} characters`)
+    .test(
+      'is-taken',
+      ({label}) => 'Username is already taken.',
+      async (value, _) => {
+        const currentUserEmail = auth().currentUser?.email;
+        const userCollection = firestore().collection('Users');
+        let snapshot = await userCollection
+          .where('email', '==', currentUserEmail)
+          .get();
+        if (snapshot.docs[0].data().username === value) {
+          return true;
+        }
+        snapshot = await userCollection.where('username', '==', value).get();
+        return !!snapshot.empty;
+      },
+    ),
+
   businessAddressDetail: yup.object().shape({
     pincode: yup
       .number()
@@ -92,6 +112,7 @@ const UserDetailsValidationSchema = yup.object().shape({
 
 export default function Form() {
   const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
   const initialValues: Inputs = {
     username: user.username,
     businessAddressDetail: {
@@ -110,7 +131,22 @@ export default function Form() {
     <Formik
       initialValues={initialValues}
       validationSchema={UserDetailsValidationSchema}
-      onSubmit={values => console.log(values)}>
+      onSubmit={values => {
+        dispatch(
+          updateUser({
+            userId: user.id,
+            username: values.username,
+            bankAccountDetails: values.bankAccountDetails,
+            businessAddressDetail: values.businessAddressDetail,
+          }),
+        );
+        // dispatch(
+        //   updateUsername({
+        //     oldUsername: user.username,
+        //     newUsername: values.username,
+        //   }),
+        // );
+      }}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.formContainer}>
           <View style={styles.detailSection}>
