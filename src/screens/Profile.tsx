@@ -6,9 +6,7 @@ import {
   View,
   ScrollView,
   Pressable,
-  TouchableOpacity,
   Image,
-  TextInput,
 } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Feather';
@@ -20,21 +18,7 @@ import {RootState} from '../store/store';
 import storage from '@react-native-firebase/storage';
 import {useDispatch} from 'react-redux';
 import auth from '@react-native-firebase/auth';
-
-type Inputs = {
-  username: string;
-  businessAddressDetail?: {
-    pincode?: number;
-    address?: string;
-    city?: string;
-    country?: string;
-  };
-  bankAccountDetails?: {
-    bankAccountNumber?: number;
-    accountHolderName?: string;
-    ifscCode?: number;
-  };
-};
+import Form from '../components/profile/Form';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -64,9 +48,6 @@ export default function Profile() {
         errorCallback: () => fileRef.delete(),
       }),
     );
-  };
-  const onSubmit = data => {
-    console.log(data);
   };
 
   return (
@@ -101,55 +82,9 @@ export default function Profile() {
               )}
             </Pressable>
           </View>
+          <Text style={styles.handle}>{user.username}</Text>
         </View>
-        <View style={styles.detailSection}>
-          <Text style={styles.sectionTitle}>Personal Details</Text>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Username</Text>
-            <TextInput
-              style={styles.textInput}
-              placeholder={user.username}
-              placeholderTextColor={COLORS.lightgray}
-            />
-          </View>
-        </View>
-        <View style={styles.detailSection}>
-          <Text style={styles.sectionTitle}>Business Address Details</Text>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Pincode</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Address</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>City</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Country</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-        </View>
-        <View style={styles.detailSection}>
-          <Text style={styles.sectionTitle}>Bank Account Details</Text>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Bank Account Number</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>Account Holder's Name</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-          <View style={styles.inputContaiener}>
-            <Text style={styles.inputLabel}>IFSC Code</Text>
-            <TextInput style={styles.textInput} />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
+        <Form />
       </ScrollView>
     </View>
   );
@@ -207,15 +142,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: COLORS.lightpink,
   },
+  handle: {
+    ...TYPOGRAPHY.bodyRegular,
+    color: COLORS.black,
+  },
+  formContainer: {
+    marginTop: 30,
+    gap: 30,
+  },
   detailSection: {
-    gap: 20,
+    gap: 10,
+    // borderWidth: 1,
+    borderColor: COLORS.red,
   },
   sectionTitle: {
     ...TYPOGRAPHY.h2Regular,
     fontSize: 18,
   },
   inputContaiener: {
-    gap: 10,
+    gap: 1,
+    // borderWidth: 1,
   },
   inputLabel: {
     ...TYPOGRAPHY.captions,
@@ -244,8 +190,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.red,
     borderRadius: 5,
   },
-  handle: {
-    ...TYPOGRAPHY.bodyRegular,
-    color: 'gray',
+  errorMessage: {
+    ...TYPOGRAPHY.captions,
+    color: COLORS.red,
+    fontSize: 12,
   },
 });
