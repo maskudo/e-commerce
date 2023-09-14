@@ -27,10 +27,10 @@ export default function Login() {
         })
         .catch(err => {
           setError(err.code.split('/')[1]);
+          return;
         });
     }
     setPassword('');
-    setEmail('');
   };
   return (
     <View style={styles.container}>
@@ -44,7 +44,6 @@ export default function Login() {
           </Text>
           <TextInput
             style={styles.textInput}
-            hitSlop={20}
             placeholder={'Email'}
             onChangeText={text => {
               setEmail(text);
@@ -61,7 +60,7 @@ export default function Login() {
           </Text>
           <TextInput
             style={styles.textInput}
-            hitSlop={20}
+            secureTextEntry={true}
             placeholder={'Password'}
             onChangeText={text => {
               setPassword(text);

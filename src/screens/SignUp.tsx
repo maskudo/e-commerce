@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   Keyboard,
   StyleSheet,
@@ -17,10 +17,17 @@ import {useNavigation} from '@react-navigation/native';
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [repassword, setRePassword] = useState('');
   const [error, setError] = useState('');
   const navigation = useNavigation();
   const handleEndEditing = () => {
     Keyboard.dismiss();
+    if (password !== repassword) {
+      setError('Passwords do not match!');
+      return;
+    } else {
+      setError('');
+    }
     if (email && password) {
       console.log({email, password});
       auth()
@@ -61,7 +68,6 @@ export default function SignUp() {
           </Text>
           <TextInput
             style={styles.textInput}
-            hitSlop={20}
             placeholder={'Email'}
             onChangeText={text => setEmail(text)}
             value={email}
@@ -74,10 +80,24 @@ export default function SignUp() {
           </Text>
           <TextInput
             style={styles.textInput}
-            hitSlop={20}
             placeholder={'Password'}
+            secureTextEntry={true}
             onChangeText={text => setPassword(text)}
             value={password}
+            placeholderTextColor={COLORS.gray}
+            blurOnSubmit={true}
+          />
+        </View>
+        <View style={styles.textInputContainer}>
+          <Text>
+            <Icon name={'lock'} color={COLORS.gray} size={20} />
+          </Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder={'Confirm Password'}
+            secureTextEntry={true}
+            onChangeText={text => setRePassword(text)}
+            value={repassword}
             placeholderTextColor={COLORS.gray}
             blurOnSubmit={true}
           />

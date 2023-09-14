@@ -20,6 +20,7 @@ import {RootState} from '../store/store';
 import storage from '@react-native-firebase/storage';
 import {useDispatch} from 'react-redux';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import auth from '@react-native-firebase/auth';
 
 type Inputs = {
   username: string;
@@ -42,6 +43,7 @@ export default function Profile() {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const goBack = () => navigation.goBack();
+  const logOut = async () => await auth().signOut();
 
   const handleClickProfileImage = async () => {
     let image;
@@ -81,6 +83,9 @@ export default function Profile() {
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>Profile</Text>
           </View>
+          <Pressable onPress={logOut}>
+            <Icon name="log-out" size={20} color={COLORS.black} />
+          </Pressable>
         </View>
         <View style={styles.profilePic}>
           <View style={styles.imageContainerOutline}>
