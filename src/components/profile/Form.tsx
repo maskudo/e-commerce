@@ -9,6 +9,7 @@ import {useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import COLORS from '../../constants/colors';
 import TYPOGRAPHY from '../../constants/typography';
+import * as yup from 'yup';
 
 type Inputs = {
   username: string | undefined;
@@ -24,6 +25,70 @@ type Inputs = {
     ifscCode: number | undefined;
   };
 };
+
+const UserDetailsValidationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required('Username is Required')
+    .min(3, ({min}) => `Username must be at least ${min} characters`)
+    .max(20, ({max}) => `Username must be at most ${max} characters`),
+  businessAddressDetail: yup.object().shape({
+    pincode: yup
+      .number()
+      // .test({
+      //   name: '4 digits',
+      //   test(value, ctx) {
+      //     if (value?.toString().length !== 4) {
+      //       return ctx.createError({
+      //         message: 'Pincode must be a 4 digit number.',
+      //       });
+      //     }
+      //     return true;
+      //   },
+      // })
+      .label('Pincode')
+      .min(1000, 'Pincode must be a 4 digit number')
+      .max(9999, 'Pincode must be a 4 digit number'),
+
+    address: yup
+      .string()
+      .min(3, ({min}) => `Address must be at least ${min} characters`)
+      .max(30, ({max}) => `Address must be at most ${max} characters`)
+      .label('Address'),
+    city: yup
+      .string()
+      .min(3, ({min}) => `City must be at least ${min} characters`)
+      .max(30, ({max}) => `City must be at most ${max} characters`)
+      .label('City'),
+    country: yup
+      .string()
+      .min(3, ({min}) => `Country must be at least ${min} characters`)
+      .max(30, ({max}) => `Country must be at most ${max} characters`)
+      .label('Country'),
+  }),
+  bankAccountDetails: yup.object().shape({
+    bankAccountNumber: yup
+      .string()
+      .min(1000_0000_0000_0000, 'Pincode must be a 16 digit number')
+      .max(9999_9999_9999_9999, 'Pincode must be a 16 digit number')
+      .label('Bank Account Number'),
+    accountHolderName: yup
+      .string()
+      .min(
+        3,
+        ({min}) => `Account Holder Name must be at least ${min} characters`,
+      )
+      .max(
+        30,
+        ({max}) => `Account Holder Name must be at most ${max} characters`,
+      )
+      .label('Account Holder Name'),
+    ifscCode: yup
+      .string()
+      .length(6, ({length}) => `IFSC Code must be ${length} characters`)
+      .label('IFSC Code'),
+  }),
+});
 
 export default function Form() {
   const user = useSelector((state: RootState) => state.user);
@@ -44,6 +109,7 @@ export default function Form() {
   return (
     <Formik
       initialValues={initialValues}
+      validationSchema={UserDetailsValidationSchema}
       onSubmit={values => console.log(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.formContainer}>
@@ -74,8 +140,7 @@ export default function Form() {
                 onBlur={handleBlur('businessAddressDetail.pincode')}
                 value={values.businessAddressDetail?.pincode}
               />
-              {errors.businessAddressDetail?.pincode &&
-              touched.businessAddressDetail?.pincode ? (
+              {errors.businessAddressDetail?.pincode ? (
                 <Text style={styles.errorMessage}>
                   {errors.businessAddressDetail.pincode}
                 </Text>
@@ -89,8 +154,7 @@ export default function Form() {
                 onBlur={handleBlur('businessAddressDetail.address')}
                 value={values.businessAddressDetail?.address}
               />
-              {errors.businessAddressDetail?.address &&
-              touched.businessAddressDetail?.address ? (
+              {errors.businessAddressDetail?.address ? (
                 <Text style={styles.errorMessage}>
                   {errors.businessAddressDetail.address}
                 </Text>
