@@ -19,7 +19,6 @@ import TYPOGRAPHY from '../constants/typography';
 import {RootState} from '../store/store';
 import storage from '@react-native-firebase/storage';
 import {useDispatch} from 'react-redux';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import auth from '@react-native-firebase/auth';
 
 type Inputs = {
@@ -38,7 +37,6 @@ type Inputs = {
 };
 
 export default function Profile() {
-  const {handleSubmit, control} = useForm<Inputs>();
   const navigation = useNavigation();
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
@@ -108,22 +106,10 @@ export default function Profile() {
           <Text style={styles.sectionTitle}>Personal Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Username</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  placeholder={user.username}
-                  placeholderTextColor={COLORS.lightgray}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="username"
+            <TextInput
+              style={styles.textInput}
+              placeholder={user.username}
+              placeholderTextColor={COLORS.lightgray}
             />
           </View>
         </View>
@@ -131,137 +117,37 @@ export default function Profile() {
           <Text style={styles.sectionTitle}>Business Address Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Pincode</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="businessAddressDetail.pincode"
-            />
+            <TextInput style={styles.textInput} />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Address</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="businessAddressDetail.address"
-            />
+            <TextInput style={styles.textInput} />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>City</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="businessAddressDetail.city"
-            />
+            <TextInput style={styles.textInput} />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Country</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="businessAddressDetail.country"
-            />
+            <TextInput style={styles.textInput} />
           </View>
         </View>
         <View style={styles.detailSection}>
           <Text style={styles.sectionTitle}>Bank Account Details</Text>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Bank Account Number</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="bankAccountDetails.bankAccountNumber"
-            />
+            <TextInput style={styles.textInput} />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>Account Holder's Name</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="bankAccountDetails.accountHolderName"
-            />
+            <TextInput style={styles.textInput} />
           </View>
           <View style={styles.inputContaiener}>
             <Text style={styles.inputLabel}>IFSC Code</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.textInput}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="bankAccountDetails.ifscCode"
-            />
+            <TextInput style={styles.textInput} />
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
