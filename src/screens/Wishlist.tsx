@@ -34,7 +34,9 @@ export default function Wishlist() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollview}>
+      <ScrollView
+        contentContainerStyle={styles.scrollview}
+        showsVerticalScrollIndicator={false}>
         <Header setSearchTerm={setSearchTerm} />
         <FilterHeader
           title={'Wishlist'}

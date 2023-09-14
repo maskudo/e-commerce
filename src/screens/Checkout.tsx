@@ -12,16 +12,17 @@ import {RootState} from '../store/store';
 import {currencyFormatter} from '../utils/functions';
 
 const PAYMENT_OPTIONS = [
-  {type: 'visa', icon: 'cc-visa', accountNo: '*********2109'},
-  {type: 'paypal', icon: 'cc-paypal', accountNo: '*********2109'},
-  {type: 'apple-pay', icon: 'cc-apple-pay', accountNo: '*********2109'},
-  {type: 'mastercard', icon: 'cc-mastercard', accountNo: '*********2109'},
+  {type: 'visa', icon: 'cc-visa', accountNo: '************2109'},
+  {type: 'paypal', icon: 'cc-paypal', accountNo: '************2109'},
+  {type: 'apple-pay', icon: 'cc-apple-pay', accountNo: '************2109'},
+  {type: 'mastercard', icon: 'cc-mastercard', accountNo: '************2109'},
 ];
 
 export default function Checkout() {
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
   const cart = useSelector((state: RootState) => state.cart);
+  const user = useSelector((state: RootState) => state.user);
   const products = useSelector((state: RootState) => state.products);
   const [modalVisible, setModalVisible] = useState(false);
   const cartItems = cart?.items?.map(item => {
@@ -70,7 +71,8 @@ export default function Checkout() {
             <View style={[styles.deliveryAddress, styles.boxShadow]}>
               <Text style={styles.deliveryAddressTitle}>Address</Text>
               <Text style={styles.deliveryAddressLocation}>
-                216 St Paul's Rd, London N1 2LL, UK {'\n'}Contact : +44-784232
+                {user.businessAddressDetail?.address ??
+                  "216 St Paul's Rd, London N1 2LL, UK {'\n'}Contact : +44-784232"}
               </Text>
             </View>
             <View style={[styles.editDeliveryAddress, styles.boxShadow]}>
@@ -132,7 +134,9 @@ export default function Checkout() {
               onPress={() => setSelectedPaymentOption(payment.type)}>
               <BrandIcon name={payment.icon} size={30} color={COLORS.black} />
               <Text style={[styles.totalCostText, {color: COLORS.black}]}>
-                {payment.accountNo}
+                {user.bankAccountDetails?.bankAccountNumber
+                  ?.toString()
+                  .replace(/^.{12}/, '*************') ?? payment.accountNo}
               </Text>
             </Pressable>
           ))}

@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(true);
   const [error, setError] = useState('');
   const navigation = useNavigation();
   const handleEndEditing = () => {
@@ -35,7 +36,7 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <View style={styles.eCommerce}>
-        <Text style={styles.name}>Welcome Back</Text>
+        <Text style={styles.name}>Welcome{'\n'}Back!</Text>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.textInputContainer}>
@@ -60,7 +61,7 @@ export default function Login() {
           </Text>
           <TextInput
             style={styles.textInput}
-            secureTextEntry={true}
+            secureTextEntry={showPassword}
             placeholder={'Password'}
             onChangeText={text => {
               setPassword(text);
@@ -70,6 +71,9 @@ export default function Login() {
             placeholderTextColor={COLORS.gray}
             blurOnSubmit={true}
           />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Icon name={'eye'} color={COLORS.gray} size={20} />
+          </TouchableOpacity>
         </View>
         {error && <Text style={styles.error}>{error}</Text>}
         <TouchableOpacity onPress={handleEndEditing} style={styles.button}>
@@ -96,8 +100,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   eCommerce: {
-    height: '55%',
-    alignItems: 'center',
+    height: '35%',
+    alignItems: 'flex-start',
+    paddingLeft: 40,
     justifyContent: 'center',
   },
   name: {
@@ -121,7 +126,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   textInput: {
-    color: COLORS.gray,
     flex: 1,
   },
   error: {
@@ -130,16 +134,17 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 1,
-    margin: 10,
+    marginTop: 30,
     marginHorizontal: 30,
-    borderRadius: 10,
+    borderRadius: 6,
     borderColor: COLORS.gray,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
     padding: 5,
-    backgroundColor: COLORS.green,
+    backgroundColor: COLORS.red,
+    height: 55,
   },
   buttonText: {
     ...TYPOGRAPHY.h3,
@@ -149,13 +154,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   signIn: {
     color: COLORS.black,
   },
   signInText: {
-    color: COLORS.green,
+    color: COLORS.red,
     textDecorationLine: 'underline',
   },
 });

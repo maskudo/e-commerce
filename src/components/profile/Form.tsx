@@ -88,9 +88,9 @@ const UserDetailsValidationSchema = yup.object().shape({
   }),
   bankAccountDetails: yup.object().shape({
     bankAccountNumber: yup
-      .string()
-      .min(1000_0000_0000_0000, 'Pincode must be a 16 digit number')
-      .max(9999_9999_9999_9999, 'Pincode must be a 16 digit number')
+      .number()
+      .min(1000000000000000, 'Pincode must be a 16 digit number')
+      .max(9999999999999999, 'Pincode must be a 16 digit number')
       .label('Bank Account Number'),
     accountHolderName: yup
       .string()
@@ -113,6 +113,7 @@ const UserDetailsValidationSchema = yup.object().shape({
 export default function Form() {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  console.log({user});
   const initialValues: Inputs = {
     username: user.username,
     businessAddressDetail: {
@@ -173,6 +174,7 @@ export default function Form() {
               <TextInput
                 style={styles.textInput}
                 onChangeText={handleChange('businessAddressDetail.pincode')}
+                placeholder={user.businessAddressDetail?.pincode ?? ''}
                 onBlur={handleBlur('businessAddressDetail.pincode')}
                 value={values.businessAddressDetail?.pincode}
               />
@@ -186,6 +188,7 @@ export default function Form() {
               <Text style={styles.inputLabel}>Address</Text>
               <TextInput
                 style={styles.textInput}
+                placeholder={user.businessAddressDetail?.address ?? ''}
                 onChangeText={handleChange('businessAddressDetail.address')}
                 onBlur={handleBlur('businessAddressDetail.address')}
                 value={values.businessAddressDetail?.address}
@@ -200,6 +203,7 @@ export default function Form() {
               <Text style={styles.inputLabel}>City</Text>
               <TextInput
                 style={styles.textInput}
+                placeholder={user.businessAddressDetail?.city ?? ''}
                 onChangeText={handleChange('businessAddressDetail.city')}
                 onBlur={handleBlur('businessAddressDetail.city')}
                 value={values.businessAddressDetail?.city}

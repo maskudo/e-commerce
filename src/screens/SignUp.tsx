@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {
   Keyboard,
   StyleSheet,
@@ -17,6 +17,8 @@ import {useNavigation} from '@react-navigation/native';
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(true);
+  const [reShowPassword, setReShowPassword] = useState(true);
   const [repassword, setRePassword] = useState('');
   const [error, setError] = useState('');
   const navigation = useNavigation();
@@ -81,12 +83,15 @@ export default function SignUp() {
           <TextInput
             style={styles.textInput}
             placeholder={'Password'}
-            secureTextEntry={true}
+            secureTextEntry={showPassword}
             onChangeText={text => setPassword(text)}
             value={password}
             placeholderTextColor={COLORS.gray}
             blurOnSubmit={true}
           />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Icon name={'eye'} color={COLORS.gray} size={20} />
+          </TouchableOpacity>
         </View>
         <View style={styles.textInputContainer}>
           <Text>
@@ -95,16 +100,26 @@ export default function SignUp() {
           <TextInput
             style={styles.textInput}
             placeholder={'Confirm Password'}
-            secureTextEntry={true}
+            secureTextEntry={reShowPassword}
             onChangeText={text => setRePassword(text)}
             value={repassword}
             placeholderTextColor={COLORS.gray}
             blurOnSubmit={true}
           />
+          <TouchableOpacity onPress={() => setReShowPassword(!reShowPassword)}>
+            <Icon name={'eye'} color={COLORS.gray} size={20} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.agreementContainer}>
+          <Text style={styles.agreement}>
+            By clicking the
+            <Text style={{color: COLORS.red}}> Register</Text> button, you agree
+            to the terms and conditions of eCommerce Inc.
+          </Text>
         </View>
         {error && <Text style={styles.error}>{error}</Text>}
         <TouchableOpacity onPress={handleEndEditing} style={styles.button}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.signInContainer}>
@@ -116,7 +131,6 @@ export default function SignUp() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -128,8 +142,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   eCommerce: {
-    height: '55%',
-    alignItems: 'center',
+    height: '35%',
+    alignItems: 'flex-start',
+    paddingLeft: 40,
     justifyContent: 'center',
   },
   name: {
@@ -153,7 +168,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   textInput: {
-    color: COLORS.gray,
     flex: 1,
   },
   error: {
@@ -162,16 +176,17 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 1,
-    margin: 10,
+    marginTop: 30,
     marginHorizontal: 30,
-    borderRadius: 10,
+    borderRadius: 6,
     borderColor: COLORS.gray,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
     padding: 5,
-    backgroundColor: COLORS.green,
+    backgroundColor: COLORS.red,
+    height: 55,
   },
   buttonText: {
     ...TYPOGRAPHY.h3,
@@ -181,13 +196,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   signIn: {
     color: COLORS.black,
   },
   signInText: {
-    color: COLORS.green,
+    color: COLORS.red,
     textDecorationLine: 'underline',
+  },
+  agreementContainer: {
+    marginVertical: 5,
+    marginHorizontal: 30,
+  },
+  agreement: {
+    ...TYPOGRAPHY.captions,
+    color: COLORS.gray,
   },
 });

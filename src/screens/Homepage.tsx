@@ -18,7 +18,9 @@ import Header from '../components/common/Header';
 export default function Homepage() {
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollview}>
+      <ScrollView
+        contentContainerStyle={styles.scrollview}
+        showsVerticalScrollIndicator={false}>
         <Header disableSearchBar={true} />
         <Categories />
         <DiscountSwiper />

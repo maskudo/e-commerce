@@ -13,9 +13,11 @@ export default function CategoryScreen({route}) {
   const categoryItems = products.filter(item => item.category === category);
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollview}>
+      <ScrollView
+        contentContainerStyle={styles.scrollview}
+        showsVerticalScrollIndicator={false}>
         <Header />
-        <FilterHeader title={'Wishlist'} />
+        <FilterHeader title={category} />
         <VariableFlatlist data={categoryItems} />
       </ScrollView>
     </View>

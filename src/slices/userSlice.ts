@@ -155,8 +155,17 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserFromAuth: (state, action) => {
-      const {displayName, email, username, wishlist, id, cart, image} =
-        action.payload;
+      const {
+        displayName,
+        email,
+        username,
+        wishlist,
+        id,
+        cart,
+        image,
+        businessAddressDetail,
+        bankAccountDetails,
+      } = action.payload;
       state.displayName = displayName;
       state.email = email;
       state.image = image;
@@ -164,6 +173,8 @@ const userSlice = createSlice({
       state.cart = cart;
       state.wishlist = wishlist ?? [];
       state.id = id;
+      state.businessAddressDetail = businessAddressDetail;
+      state.bankAccountDetails = bankAccountDetails;
     },
   },
   extraReducers: builder => {
@@ -194,6 +205,13 @@ const userSlice = createSlice({
       .addCase(updateUserWishlist.rejected, () => {
         ToastAndroid.showWithGravity(
           'Failed updating Wishlist',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .addCase(updateUser.fulfilled, () => {
+        ToastAndroid.showWithGravity(
+          'Updated User Information Successfully',
           ToastAndroid.SHORT,
           ToastAndroid.BOTTOM,
         );
