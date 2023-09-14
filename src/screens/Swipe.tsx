@@ -1,5 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Pressable,
+} from 'react-native';
 import COLORS from '../constants/colors';
 import TYPOGRAPHY from '../constants/typography';
 import Swiper from 'react-native-swiper';
@@ -25,7 +32,7 @@ export default function Swipe() {
           image={swiperImage1}
           title={'Choose Products'}
           description={
-            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
+            "Choose from our wide category of products. Shop to your heart's content."
           }
         />
         <Text style={styles.next}>Next</Text>
@@ -35,7 +42,7 @@ export default function Swipe() {
           image={swiperImage2}
           title={'Make Payment'}
           description={
-            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
+            'Make payments with your favourite payment portal from Paypal to your bank account.'
           }
         />
         <Text style={styles.previous}>Prev</Text>
@@ -45,9 +52,7 @@ export default function Swipe() {
         <Screen
           image={swiperImage3}
           title={'Get Your Order'}
-          description={
-            'Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.'
-          }
+          description={'Get your orders with a guaranteed one day delivery.'}
         />
         <Text style={styles.previous}>Prev</Text>
         <Text style={styles.next}>Get Started</Text>

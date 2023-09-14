@@ -1,8 +1,19 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# eCommerce
+
+A social media app clone
+
+# Screenshots
+
+<img src="screenshots/login.png" height="600">
+<img src="screenshots/signup.png" height="600">
+<img src="screenshots/homepage.png" height="600">
+<img src="screenshots/wishlist.png" height="600">
+<img src="screenshots/searchAndFilter.png" height="600">
+<img src="screenshots/profile.png" height="600">
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
