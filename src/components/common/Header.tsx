@@ -19,8 +19,10 @@ import {RootState} from '../../store/store';
 
 export default function Header({
   setSearchTerm,
+  disableSearchBar,
 }: {
   setSearchTerm?: (term: string) => void;
+  disableSearchBar?: boolean;
 }) {
   const profileImage = useSelector((state: RootState) => state?.user?.image);
   const navigation = useNavigation();
@@ -63,21 +65,23 @@ export default function Header({
           )}
         </Pressable>
       </View>
-      <View style={styles.searchBarContainer}>
-        <Text>
-          <Icon name="search" size={20} color={COLORS.gray} />
-        </Text>
-        <TextInput
-          style={styles.searchBar}
-          value={searchText}
-          onChangeText={text => setSearchText(text)}
-          placeholder="Search any Product"
-          placeholderTextColor={COLORS.gray}
-        />
-        <Text>
-          <Icon name="mic" size={20} color={COLORS.gray} />
-        </Text>
-      </View>
+      {!disableSearchBar && (
+        <View style={styles.searchBarContainer}>
+          <Text>
+            <Icon name="search" size={20} color={COLORS.gray} />
+          </Text>
+          <TextInput
+            style={styles.searchBar}
+            value={searchText}
+            onChangeText={text => setSearchText(text)}
+            placeholder="Search any Product"
+            placeholderTextColor={COLORS.gray}
+          />
+          <Text>
+            <Icon name="mic" size={20} color={COLORS.gray} />
+          </Text>
+        </View>
+      )}
     </View>
   );
 }

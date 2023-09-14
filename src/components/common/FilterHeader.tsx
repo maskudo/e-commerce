@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -15,9 +14,9 @@ export default function FilterHeader({
 }: {
   title: string;
   sortBy: string | null;
-  setSortBy: (val: string) => void;
+  setSortBy: (val: string | null) => void;
   filterBy: string | null;
-  setFilterBy: (val: string) => void;
+  setFilterBy: (val: string | null) => void;
 }) {
   const [isModalVisisble, setIsModalVisible] = useState(false);
   const handleClick = () => setIsModalVisible(true);

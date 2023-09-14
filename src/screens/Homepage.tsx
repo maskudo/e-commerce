@@ -14,14 +14,12 @@ import {newArrivalImage, sponsoredImage} from '../constants/images';
 import TYPOGRAPHY from '../constants/typography';
 import Deals from '../components/home/Deals';
 import Header from '../components/common/Header';
-import FilterHeader from '../components/common/FilterHeader';
 
 export default function Homepage() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollview}>
-        <Header />
-        <FilterHeader title="All Featured" />
+        <Header disableSearchBar={true} />
         <Categories />
         <DiscountSwiper />
         <Deals />

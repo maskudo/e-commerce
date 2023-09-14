@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -33,9 +32,9 @@ export default function FilterModal({
   isVisible: boolean;
   setIsVisible: (val: boolean) => void;
   sortBy: string | null;
-  setSortBy: (val: string) => void;
+  setSortBy: (val: string | null) => void;
   filterBy: string | null;
-  setFilterBy: (val: string) => void;
+  setFilterBy: (val: string | null) => void;
 }) {
   const setInvisible = () => setIsVisible(false);
   return (
