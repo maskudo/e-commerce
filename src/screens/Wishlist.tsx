@@ -6,29 +6,44 @@ import {View, ScrollView, StyleSheet} from 'react-native';
 import FilterHeader from '../components/common/FilterHeader';
 import Header from '../components/common/Header';
 import {ItemProps} from '../components/common/Item';
+import {filterByCategory, sortByCategory} from '../utils/functions';
 
 export default function Wishlist() {
   const user = useSelector((state: RootState) => state.user);
   const products = useSelector((state: RootState) => state.products);
-  const wishlist =
-    user?.wishlist?.map(itemId => products.find(i => i.id === itemId)) ?? [];
-  const [searchedContent, setSearchedContent] = useState<ItemProps[]>(wishlist);
-  const [filteredContent, setFilteredContent] =
-    useState<ItemProps[]>(searchedContent);
+  const wishlist: ItemProps[] = products.filter(item =>
+    user.wishlist?.includes(item.id),
+  );
+  const [sortBy, setSortBy] = useState<null | string>(null);
+  const [filterBy, setFilterBy] = useState<null | string>(null);
+  const [searchTerm, setSearchTerm] = useState<null | string>(null);
+  const searchedContent = searchTerm?.length
+    ? wishlist.filter(
+        item =>
+          item.name.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm) ||
+          item.category.toLowerCase().includes(searchTerm),
+      )
+    : wishlist;
+  const filteredContent = filterBy?.length
+    ? filterByCategory(searchedContent, filterBy)
+    : searchedContent;
+  const sortedContent = sortBy?.length
+    ? sortByCategory(searchedContent, sortBy)
+    : filteredContent;
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollview}>
-        <Header
-          originalItems={wishlist}
-          setSearchedContent={setSearchedContent}
-        />
+        <Header setSearchTerm={setSearchTerm} />
         <FilterHeader
           title={'Wishlist'}
-          originalItems={searchedContent}
-          setFilteredItems={setFilteredContent}
-          filteredItems={filteredContent}
+          sortBy={sortBy}
+          filterBy={filterBy}
+          setSortBy={setSortBy}
+          setFilterBy={setFilterBy}
         />
-        <VariableFlatlist data={filteredContent} />
+        <VariableFlatlist data={sortedContent} />
       </ScrollView>
     </View>
   );

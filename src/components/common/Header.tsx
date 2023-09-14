@@ -16,35 +16,19 @@ import COLORS from '../../constants/colors';
 import {logoImage, menuIcon} from '../../constants/images';
 import TYPOGRAPHY from '../../constants/typography';
 import {RootState} from '../../store/store';
-import {ItemProps} from './Item';
 
 export default function Header({
-  originalItems,
-  setSearchedContent,
+  setSearchTerm,
 }: {
-  originalItems?: ItemProps[];
-  setSearchedContent?: (items: ItemProps[]) => void;
+  setSearchTerm?: (term: string) => void;
 }) {
   const profileImage = useSelector((state: RootState) => state?.user?.image);
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 200);
   useEffect(() => {
-    if (!(originalItems && setSearchedContent)) {
-      return;
-    }
-    if (searchText === '') {
-      setSearchedContent(originalItems);
-      return;
-    }
-    const content = originalItems.filter(
-      item =>
-        item.name.toLowerCase().includes(searchText) ||
-        item.description.toLowerCase().includes(searchText) ||
-        item.category.toLowerCase().includes(searchText),
-    );
-    setSearchedContent(content);
-  }, [debouncedSearchText]);
+    setSearchTerm && setSearchTerm(debouncedSearchText);
+  }, [debouncedSearchText, setSearchTerm]);
 
   return (
     <View style={styles.container}>
